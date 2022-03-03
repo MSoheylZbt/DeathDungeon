@@ -24,7 +24,7 @@ public class Knight : MonoBehaviour
 
     private void Update()
     {
-        if (reflex.currentState != TimerState.NotStarted)
+        if (reflex.GetCurrentState() != TimerState.NotStarted)
             return;
 
         if(Input.GetKeyDown(KeyCode.UpArrow))
@@ -102,5 +102,10 @@ public class Knight : MonoBehaviour
         {
             print("Die Motherfucker");
         }
+    }
+
+    public Vector3Int GetPlayerTilePos()
+    {
+        return (tilemap.WorldToCell(transform.position) - tilemap.origin);
     }
 }
