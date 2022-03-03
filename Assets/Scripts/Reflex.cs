@@ -64,8 +64,7 @@ public class Reflex : MonoBehaviour
             elapsedTime += Time.deltaTime;
             reflexUI.SetSliderFiller(elapsedTime);
 
-            //Vector3 moveDirection = player.transform.position - arrowObj.transform.position;
-            arrowObj.transform.Translate(-transform.up * Time.deltaTime * arrowSpeed);
+            arrowObj.transform.Translate(-transform.up  * arrowSpeed * Time.deltaTime);
 
             if (elapsedTime >= greenStart)
                 SetCurrentState(TimerState.Green, Color.green);

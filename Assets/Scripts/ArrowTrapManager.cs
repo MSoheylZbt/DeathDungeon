@@ -34,8 +34,7 @@ public class ArrowTrapManager : MonoBehaviour
     public float GetAverageVelocity(Vector3 playerPos,float totalLength)
     {
         float startY = arrows[playerTileMapPos.x].transform.position.y;
-        float deltaY = Mathf.Abs(playerPos.y) - Mathf.Abs(startY);
-        print("Average Speed is: " + (deltaY / totalLength).ToString());
+        float deltaY = playerPos.y - startY;
         return Mathf.Abs(deltaY / totalLength);
 
     }
