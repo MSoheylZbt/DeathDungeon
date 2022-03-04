@@ -10,12 +10,16 @@ public class ReflexUI : MonoBehaviour
     TextMeshProUGUI textMesh;
     Image image;
 
-    public void Init(float length)
+    public void Init()
     {
         slider = GetComponent<Slider>();
-        slider.maxValue = length;
         textMesh = GetComponentInChildren<TextMeshProUGUI>();
         image = slider.fillRect.gameObject.GetComponent<Image>();
+    }
+
+    public void SetSliderMaxValue(float length)
+    {
+        slider.maxValue = length;
     }
 
     public void SetSliderFiller(float amount)

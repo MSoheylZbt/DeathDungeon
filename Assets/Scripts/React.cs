@@ -10,76 +10,75 @@ public enum TimerState
     Yellow
 }
 
-public class Reflex : MonoBehaviour
+
+public class React : MonoBehaviour
 {
-    [Header("Timer")]
-    [SerializeField] float yellowStart;
-    [SerializeField] float greenStart;
-    [SerializeField] float totalLength;
+    [Header("From React")]
     [SerializeField] ReflexUI reflexUI;
-    [SerializeField] ArrowTrapManager arrowManager;
 
     TimerState currentState = TimerState.NotStarted;
 
     #region Cache
-    float elapsedTime = 0f;
+    protected float elapsedTime = 0f;
+    protected Knight player;
     bool isTimerStarted = false;
     Coroutine timerCoroutine;
-    Knight player;
+
+    float tempGreenStart = 0f;
+    float tempYellowStart = 0f;
+    float tempTotalLength = 0f;
+
     #endregion
+
+    public delegate void TimerEnd();
+    public static event TimerEnd OnTimerEnd;
 
     public void Init(Knight knight)
     {
         player = knight;
-        reflexUI.Init(totalLength);
+        reflexUI.Init();
     }
 
-
-    private void Update()
+    protected void StartTimer(float greenStartToSet,float yellowStartToSet,float length)
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (isTimerStarted == false)
         {
-            ReflexToTraps();
+            tempGreenStart = greenStartToSet;
+            tempYellowStart = yellowStartToSet;
+            tempTotalLength = length;
+            reflexUI.SetSliderMaxValue(tempTotalLength);
+
+            timerCoroutine = StartCoroutine(Timer());
         }
     }
 
-    public void StartTimer()
-    {
-        if(isTimerStarted == false)
-            timerCoroutine = StartCoroutine(ArrowTrapTimer());
-    }
 
-    IEnumerator ArrowTrapTimer() //Side-effect: Moving Arrow
+    IEnumerator Timer() //Side-effect: Moving Arrow
     {
         isTimerStarted = true;
 
         SetCurrentState(TimerState.Red, Color.red);
 
-        float arrowSpeed = 0f;
-        GameObject arrowObj = new GameObject();
-        InitialArrowManager(out arrowSpeed,out arrowObj);
-
-        while (elapsedTime < totalLength)
+        while (elapsedTime < tempTotalLength)
         {
+            //print("Timer Started " + elapsedTime);
             elapsedTime += Time.deltaTime;
             reflexUI.SetSliderFiller(elapsedTime);
 
-            arrowObj.transform.Translate(-transform.up  * arrowSpeed * Time.deltaTime);
-
-            if (elapsedTime >= greenStart)
+            if (elapsedTime >= tempGreenStart)
                 SetCurrentState(TimerState.Green, Color.green);
-            else if (elapsedTime >= yellowStart)
+            else if (elapsedTime >= tempYellowStart)
                 SetCurrentState(TimerState.Yellow, Color.yellow);
 
             yield return new WaitForEndOfFrame();
         }
-
-        player.TakeDamage();
-        arrowManager.ResetPosition();
         ResetTimer();
+
+        if(OnTimerEnd != null)
+            OnTimerEnd();
     }
 
-    void ReflexToTraps()
+    protected virtual void ShowReaction()
     {
         switch (currentState)
         {
@@ -88,29 +87,27 @@ public class Reflex : MonoBehaviour
 
             case TimerState.Red:
                 StopCoroutine(timerCoroutine);
-                player.TakeDamage();
-                arrowManager.ResetPosition();
                 ResetTimer();
                 break;
 
             case TimerState.Green:
                 StopCoroutine(timerCoroutine);
                 print("<color=green> Green Pressed! </color>");
-                arrowManager.ResetPosition();
                 ResetTimer();
                 break;
 
             case TimerState.Yellow:
                 StopCoroutine(timerCoroutine);
                 print("<color=yellow> Yellow Pressed! </color>");
-                arrowManager.ResetPosition();
                 ResetTimer();
                 break;
         }
     }
 
+
     void ResetTimer()
     {
+        SetCurrentState(TimerState.NotStarted);
         ResetCoroutine();
         ResetUI();
     }
@@ -118,7 +115,6 @@ public class Reflex : MonoBehaviour
     void ResetCoroutine()
     {
         elapsedTime = 0;
-        currentState = TimerState.NotStarted; // SetCurrentState not used for avoiding switch and readibility of ResetUI
         isTimerStarted = false;
     }
 
@@ -129,27 +125,30 @@ public class Reflex : MonoBehaviour
         reflexUI.SetSliderText("");
     }
 
-    private void SetCurrentState(TimerState statetoSet,Color stateColor)
+
+    private void SetCurrentState(TimerState statetoSet, Color stateColor)
     {
         currentState = statetoSet;
         reflexUI.SetSliderColor(stateColor);
+        SetStateText();
+    }
 
+    public void SetStateText()
+    {
         if (currentState == TimerState.Red)
             reflexUI.SetSliderText("Wait");
         else
             reflexUI.SetSliderText("Hit");
-
     }
 
-    private void InitialArrowManager(out float arrowAvgSpeed,out GameObject arrowObj)
+    protected void SetCurrentState(TimerState statetoSet)
     {
-        arrowManager.SetPlayerTilePos(player.GetPlayerTilePos());
-        arrowAvgSpeed = arrowManager.GetAverageVelocity(player.transform.position, totalLength);
-        arrowObj = arrowManager.GetCorrectArrow();
+        currentState = statetoSet;
     }
 
     public TimerState GetCurrentState()
     {
         return currentState;
     }
+
 }

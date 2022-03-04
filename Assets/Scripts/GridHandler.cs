@@ -107,14 +107,11 @@ public class GridHandler : MonoBehaviour
         Vector3Int cellGridPos = tilemap.WorldToCell(tileWorldPos);
         if(fireTrapPoses.Contains(cellGridPos))
         {
-            tilemap.SetTile(cellGridPos, gridData.arrowTrapTile);
             fireTrapPoses.Remove(cellGridPos);
             return true;
         }
         else
-        {
             return false;
-        }
     }
 
     public bool isSteppedOnTreasure(Vector3 tileWorldPos)
@@ -130,9 +127,22 @@ public class GridHandler : MonoBehaviour
             return false;
     }
 
+    public bool isSteppedOnArrowTrap(Vector3 tileWorldPos)
+    {
+        Vector3Int cellGridPos = tilemap.WorldToCell(tileWorldPos);
+        if (arrowTrapPoses.Contains(cellGridPos))
+        {
+            tilemap.SetTile(cellGridPos, gridData.arrowTrapTile);
+            arrowTrapPoses.Remove(cellGridPos);
+            return true;
+        }
+        else
+            return false;
+    }
 
     public Tilemap GetTileMap()
     {
         return tilemap;
     }
+
 }

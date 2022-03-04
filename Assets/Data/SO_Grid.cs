@@ -21,7 +21,6 @@ public class SO_Grid : ScriptableObject
     public TileBase treasureTile;
     public TileBase openedTreasureTile;
     public TileBase arrowTrapTile;
-    public TileBase fireTile;
 
     public void SetRandomDifficulty()
     {

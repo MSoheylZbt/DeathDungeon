@@ -11,26 +11,32 @@ public class Knight : MonoBehaviour
 
     #region Cache
     Tilemap tilemap;
-    Reflex reflex;
+    ArrowReact arrowReact;
+    FireReact fireReact;
     #endregion
 
 
     private void Start()
     {
         tilemap = gridHandler.GetTileMap();
-        reflex = GetComponent<Reflex>();
-        reflex.Init(this);
+
+
+        arrowReact = GetComponent<ArrowReact>();
+        arrowReact.Init(this);
+
+        fireReact = GetComponent<FireReact>();
+        fireReact.Init(this);
     }
 
     private void Update()
     {
-        if (reflex.GetCurrentState() != TimerState.NotStarted)
+        if (arrowReact.GetCurrentState() != TimerState.NotStarted)
             return;
 
         if(Input.GetKeyDown(KeyCode.UpArrow))
         {
-            Vector3 newPos = new Vector3(transform.position.x, transform.position.y + tilemap.cellSize.y, 0);
-            if (isBlock(newPos,tilemap.cellSize.y) == false)
+            Vector3 newPos = new Vector3(transform.position.x, transform.position.y + tilemap.cellSize.y, transform.position.z);
+            if (isBlock(newPos,transform.up,tilemap.cellSize.y) == false)
             {
                 transform.position = newPos;
                 TileContentCheck(newPos);
@@ -39,8 +45,8 @@ public class Knight : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.DownArrow))
         {
-            Vector3 newPos = new Vector3(transform.position.x, transform.position.y - tilemap.cellSize.y, 0);
-            if (isBlock(newPos,tilemap.cellSize.y) == false)
+            Vector3 newPos = new Vector3(transform.position.x, transform.position.y - tilemap.cellSize.y, transform.position.z);
+            if (isBlock(newPos,-transform.up,tilemap.cellSize.y) == false)
             {
                 transform.position = newPos;
                 TileContentCheck(newPos);
@@ -49,8 +55,8 @@ public class Knight : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            Vector3 newPos = new Vector3(transform.position.x - tilemap.cellSize.x, transform.position.y, 0);
-            if (isBlock(newPos,tilemap.cellSize.x) == false)
+            Vector3 newPos = new Vector3(transform.position.x - tilemap.cellSize.x, transform.position.y, transform.position.z);
+            if (isBlock(newPos,-transform.right,tilemap.cellSize.x) == false)
             {
                 transform.position = newPos;
                 TileContentCheck(newPos);
@@ -59,8 +65,8 @@ public class Knight : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.RightArrow))
         {
-            Vector3 newPos = new Vector3(transform.position.x + tilemap.cellSize.x, transform.position.y, 0);
-            if (isBlock(newPos,tilemap.cellSize.x) == false)
+            Vector3 newPos = new Vector3(transform.position.x + tilemap.cellSize.x, transform.position.y, transform.position.z);
+            if (isBlock(newPos,transform.right,tilemap.cellSize.x) == false)
             {
                 transform.position = newPos;
                 TileContentCheck(newPos);
@@ -71,25 +77,24 @@ public class Knight : MonoBehaviour
 
     private void TileContentCheck(Vector3 newPos)
     {
-        if (gridHandler.isSteppedOnFireTrap(newPos))
+        if (gridHandler.isSteppedOnTreasure(newPos))
         {
-            reflex.StartTimer();
             //Debug.Log("<color=red> Trapped! </color> ");
         }
-        else if (gridHandler.isSteppedOnTreasure(newPos))
+        else if (gridHandler.isSteppedOnFireTrap(newPos))
         {
-
+            fireReact.StartFireTimer();
             //Debug.Log("<color=yellow> Treasure! </color> ");
+        } else if(gridHandler.isSteppedOnArrowTrap(newPos))
+        {
+            arrowReact.StartArrowTimer();
         }
     }
 
-    private bool isBlock(Vector3 newPos,float rayDistance)
+    private bool isBlock(Vector3 newPos,Vector3 dir,float rayDistance)
     {
-        Vector3 dir = (newPos - transform.position).normalized;
         RaycastHit2D hitted = Physics2D.Raycast(transform.position, dir,rayDistance);
-        //if (hitted)
-        //    print(hitted.transform.gameObject.name);
-        //Debug.DrawRay(transform.position, dir, Color.red, 1f);
+        Debug.DrawRay(transform.position, dir, Color.red, 1f);
 
         return hitted;
     }
@@ -100,12 +105,23 @@ public class Knight : MonoBehaviour
         health--;
         if(health == 0)
         {
-            print("Die Motherfucker");
+            Die();
         }
+    }
+
+    public void Die()
+    {
+        print("Die Motherfucker");
+        gameObject.SetActive(false);
     }
 
     public Vector3Int GetPlayerTilePos()
     {
         return (tilemap.WorldToCell(transform.position) - tilemap.origin);
+    }
+
+    public Tilemap GetTileMap()
+    {
+        return tilemap;
     }
 }
