@@ -12,14 +12,16 @@ public class SO_Grid : ScriptableObject
 
     // X (Time) : Difficulty level , Y (Value) : Counts
     [SerializeField] AnimationCurve treasureCounts;
-    [SerializeField] AnimationCurve trapCounts;
+    [SerializeField] AnimationCurve arrowTrapCounts;
+    [SerializeField] AnimationCurve fireTrapCounts;
 
     [SerializeField] int difficultyLevel = 0;
 
     [Header("Cache References")]
     public TileBase treasureTile;
     public TileBase openedTreasureTile;
-    public TileBase trapTile;
+    public TileBase arrowTrapTile;
+    public TileBase fireTile;
 
     public void SetRandomDifficulty()
     {
@@ -32,9 +34,13 @@ public class SO_Grid : ScriptableObject
         return (int) treasureCounts.Evaluate(difficultyLevel);
     }
 
-    public int GetTrapCount()
+    public int GetArrowTrapCounts()
     {
-        return (int)trapCounts.Evaluate(difficultyLevel);
+        return (int)arrowTrapCounts.Evaluate(difficultyLevel);
     }
 
+    public int GetFireTrapCounts()
+    {
+        return (int)fireTrapCounts.Evaluate(difficultyLevel);
+    }
 }

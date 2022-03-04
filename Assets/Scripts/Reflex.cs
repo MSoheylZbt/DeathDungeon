@@ -46,10 +46,10 @@ public class Reflex : MonoBehaviour
     public void StartTimer()
     {
         if(isTimerStarted == false)
-            timerCoroutine = StartCoroutine(ReflexTimer());
+            timerCoroutine = StartCoroutine(ArrowTrapTimer());
     }
 
-    IEnumerator ReflexTimer() //Side-effect: Moving Arrow
+    IEnumerator ArrowTrapTimer() //Side-effect: Moving Arrow
     {
         isTimerStarted = true;
 

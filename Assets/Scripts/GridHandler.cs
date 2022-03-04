@@ -10,11 +10,14 @@ public class GridHandler : MonoBehaviour
     [SerializeField] SO_Grid gridData;
     [SerializeField] int allowedTreasureRow;
     int gridSize;
+    int tileMapLength;
 
     #region Cache
     Tilemap tilemap;
-    List<Vector3Int> trapPoses = new List<Vector3Int>();
+    List<Vector3Int> fireTrapPoses = new List<Vector3Int>();
+    List<Vector3Int> arrowTrapPoses = new List<Vector3Int>();
     List<Vector3Int> treasurePoses = new List<Vector3Int>();
+    List<Vector3Int> availablePoses = new List<Vector3Int>();
     #endregion
 
     #region Test
@@ -26,84 +29,95 @@ public class GridHandler : MonoBehaviour
     {
         tilemap = GetComponentInChildren<Tilemap>();
         gridSize = tilemap.size.x * tilemap.size.y;
+        tileMapLength = tilemap.size.x;
         GeneratingGrid();
     }
 
     public void GeneratingGrid()
     {
         gridData.SetRandomDifficulty();
-        GenerateTraps();
-        GenerateTreasures();
+        InitAvailablePoses();
+        GenerateTilesContent(gridData.GetTreasureCount(), allowedTreasureRow, treasurePoses,gridData.treasureTile);
+        GenerateTilesContent(gridData.GetFireTrapCounts(),1,fireTrapPoses);
+        GenerateTilesContent(gridData.GetArrowTrapCounts(),1,arrowTrapPoses);
     }
 
-    private void GenerateTraps()
+    private void InitAvailablePoses()
     {
-        int trapCounts = gridData.GetTrapCount();
-        int tileMapSize = tilemap.size.x;// X is equal to Y
+        for (int i = 0; i < gridSize; i++)
+        {
+            Vector3Int gridPos = new Vector3Int(i % tileMapLength, i / tileMapLength, 0) + tilemap.origin; // X is equal to Y
+            availablePoses.Add(gridPos);
+        }
+    }
 
+    private void GenerateTilesContent(int trapCounts,int allowedRow,List<Vector3Int> trapList,TileBase imgTile)
+    {
         for (int i = 0; i < trapCounts; i++)
         {
-            int randomNumber = Random.Range(0,gridSize);
+            int randomNumber = Random.Range(0, availablePoses.Count);
+            Vector3Int gridPos = availablePoses[randomNumber];
             //print("Without origin:" + new Vector3Int(randomNumber % tileMapSize, randomNumber / tileMapSize, 0));
-            Vector3Int gridPos = new Vector3Int(randomNumber % tileMapSize, randomNumber / tileMapSize, 0) + tilemap.origin;
-            if ( randomNumber < tileMapSize || trapPoses.Contains(gridPos))
+
+            if (randomNumber < (tileMapLength * allowedRow))
             {
                 i--;
                 continue;
             }
             else
             {
-                trapPoses.Add(gridPos);
+                trapList.Add(gridPos);
+                availablePoses.Remove(gridPos);
+                tilemap.SetTile(gridPos, imgTile);
                 //Debug.Log("Random number is : " + randomNumber + " grid pos is : " + gridPos + " Final is : " + (tilemap.origin + gridPos).ToString());
             }
 
             //Instantiate(debugText,tilemap.CellToWorld(tilemap.origin + gridPos),Quaternion.identity);
         }
+
+
     }
 
-    private void GenerateTreasures()
+    private void GenerateTilesContent(int trapCounts, int allowedRow, List<Vector3Int> trapList)
     {
-        int treasureCount = gridData.GetTreasureCount();
-        int tileMapSize = tilemap.size.x;// X is equal to Y
-
-        for (int i = 0; i < treasureCount; i++)
+        for (int i = 0; i < trapCounts; i++)
         {
-            int randomNumber = Random.Range(0, gridSize);
-            Vector3Int gridPos = new Vector3Int(randomNumber % tileMapSize, randomNumber / tileMapSize, 0) + tilemap.origin;
-            if (randomNumber < (tileMapSize * allowedTreasureRow) || trapPoses.Contains(gridPos) || treasurePoses.Contains(gridPos))
+            int randomNumber = Random.Range(0, availablePoses.Count);
+            Vector3Int gridPos = availablePoses[randomNumber];
+            //print("Without origin:" + new Vector3Int(randomNumber % tileMapSize, randomNumber / tileMapSize, 0));
+
+            if (randomNumber < (tileMapLength * allowedRow))
             {
                 i--;
                 continue;
             }
             else
             {
-                treasurePoses.Add(gridPos);
-                tilemap.SetTile(gridPos, gridData.treasureTile);
+                trapList.Add(gridPos);
+                availablePoses.Remove(gridPos);
                 //Debug.Log("Random number is : " + randomNumber + " grid pos is : " + gridPos + " Final is : " + (tilemap.origin + gridPos).ToString());
             }
 
             //Instantiate(debugText,tilemap.CellToWorld(tilemap.origin + gridPos),Quaternion.identity);
         }
-
     }
 
-    public bool CheckForTrap(Vector3 tileWorldPos)
+    public bool isSteppedOnFireTrap(Vector3 tileWorldPos)
     {
         Vector3Int cellGridPos = tilemap.WorldToCell(tileWorldPos);
-        if(trapPoses.Contains(cellGridPos))
+        if(fireTrapPoses.Contains(cellGridPos))
         {
-            tilemap.SetTile(cellGridPos, gridData.trapTile);
-            trapPoses.Remove(cellGridPos);
+            tilemap.SetTile(cellGridPos, gridData.arrowTrapTile);
+            fireTrapPoses.Remove(cellGridPos);
             return true;
         }
         else
         {
-
             return false;
         }
     }
 
-    public bool CheckForTreasure(Vector3 tileWorldPos)
+    public bool isSteppedOnTreasure(Vector3 tileWorldPos)
     {
         Vector3Int cellGridPos = tilemap.WorldToCell(tileWorldPos);
         if (treasurePoses.Contains(cellGridPos))

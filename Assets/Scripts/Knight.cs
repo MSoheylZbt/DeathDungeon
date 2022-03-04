@@ -71,12 +71,12 @@ public class Knight : MonoBehaviour
 
     private void TileContentCheck(Vector3 newPos)
     {
-        if (gridHandler.CheckForTrap(newPos))
+        if (gridHandler.isSteppedOnFireTrap(newPos))
         {
             reflex.StartTimer();
             //Debug.Log("<color=red> Trapped! </color> ");
         }
-        else if (gridHandler.CheckForTreasure(newPos))
+        else if (gridHandler.isSteppedOnTreasure(newPos))
         {
 
             //Debug.Log("<color=yellow> Treasure! </color> ");
