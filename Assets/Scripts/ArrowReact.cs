@@ -51,6 +51,7 @@ public class ArrowReact : React
         }
 
         player.TakeDamage();
+        player.SetFreeze(false);
         arrowManager.ResetPosition();
     }
 

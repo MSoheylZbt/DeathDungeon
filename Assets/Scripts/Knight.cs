@@ -15,11 +15,11 @@ public class Knight : MonoBehaviour
     FireReact fireReact;
     #endregion
 
+    bool isFreezed = false;
 
     private void Start()
     {
         tilemap = gridHandler.GetTileMap();
-
 
         arrowReact = GetComponent<ArrowReact>();
         arrowReact.Init(this);
@@ -30,7 +30,7 @@ public class Knight : MonoBehaviour
 
     private void Update()
     {
-        if (arrowReact.GetCurrentState() != TimerState.NotStarted)
+        if (isFreezed)
             return;
 
         if(Input.GetKeyDown(KeyCode.UpArrow))
@@ -87,6 +87,7 @@ public class Knight : MonoBehaviour
             //Debug.Log("<color=yellow> Treasure! </color> ");
         } else if(gridHandler.isSteppedOnArrowTrap(newPos))
         {
+            SetFreeze(true);
             arrowReact.StartArrowTimer();
         }
     }
@@ -123,5 +124,10 @@ public class Knight : MonoBehaviour
     public Tilemap GetTileMap()
     {
         return tilemap;
+    }
+
+    public void SetFreeze(bool value)
+    {
+        isFreezed = value;
     }
 }

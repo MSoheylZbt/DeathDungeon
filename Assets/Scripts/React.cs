@@ -30,8 +30,11 @@ public class React : MonoBehaviour
 
     #endregion
 
-    public delegate void TimerEnd();
-    public static event TimerEnd OnTimerEnd;
+    //public delegate void TimerEnd();
+    //public static event TimerEnd OnTimerEnd;
+
+    //public delegate void RedState();
+    //public static event RedState OnStateRed;
 
     public void Init(Knight knight)
     {
@@ -58,6 +61,11 @@ public class React : MonoBehaviour
         isTimerStarted = true;
 
         SetCurrentState(TimerState.Red, Color.red);
+        RedState();
+        //if(OnStateRed != null)
+        //    OnStateRed();
+
+        //print(tempTotalLength);
 
         while (elapsedTime < tempTotalLength)
         {
@@ -68,14 +76,18 @@ public class React : MonoBehaviour
             if (elapsedTime >= tempGreenStart)
                 SetCurrentState(TimerState.Green, Color.green);
             else if (elapsedTime >= tempYellowStart)
+            {
                 SetCurrentState(TimerState.Yellow, Color.yellow);
+                YellowState();
+            }
 
             yield return new WaitForEndOfFrame();
         }
         ResetTimer();
 
-        if(OnTimerEnd != null)
-            OnTimerEnd();
+        //if(OnTimerEnd != null)
+        //    OnTimerEnd();
+        TimerEnd();
     }
 
     protected virtual void ShowReaction()
@@ -86,20 +98,21 @@ public class React : MonoBehaviour
                 break;
 
             case TimerState.Red:
-                StopCoroutine(timerCoroutine);
+                print("Enter Red");
+                player.SetFreeze(false);
                 ResetTimer();
                 break;
 
             case TimerState.Green:
-                StopCoroutine(timerCoroutine);
-                print("<color=green> Green Pressed! </color>");
                 ResetTimer();
+                player.SetFreeze(false);
+                print("<color=green> Green Pressed! </color>");
                 break;
 
             case TimerState.Yellow:
-                StopCoroutine(timerCoroutine);
-                print("<color=yellow> Yellow Pressed! </color>");
                 ResetTimer();
+                player.SetFreeze(false);
+                print("<color=yellow> Yellow Pressed! </color>");
                 break;
         }
     }
@@ -107,6 +120,7 @@ public class React : MonoBehaviour
 
     void ResetTimer()
     {
+        StopCoroutine(timerCoroutine);
         SetCurrentState(TimerState.NotStarted);
         ResetCoroutine();
         ResetUI();
@@ -129,6 +143,7 @@ public class React : MonoBehaviour
     private void SetCurrentState(TimerState statetoSet, Color stateColor)
     {
         currentState = statetoSet;
+        //print(currentState);
         reflexUI.SetSliderColor(stateColor);
         SetStateText();
     }
@@ -151,4 +166,18 @@ public class React : MonoBehaviour
         return currentState;
     }
 
+    protected virtual void TimerEnd()
+    {
+
+    }
+
+    protected virtual void RedState()
+    {
+
+    }
+
+    protected virtual void YellowState()
+    {
+
+    }
 }

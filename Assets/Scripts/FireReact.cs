@@ -11,24 +11,29 @@ public class FireReact : React
     [SerializeField] float greenStart;
     [SerializeField] float totalLength;
 
-
+    Vector3 playerFirstPos = new Vector3();
 
     private void Update()
     {
-        if (GetCurrentState() != TimerState.NotStarted)
+        if (GetCurrentState() == TimerState.Green || GetCurrentState() == TimerState.Yellow)
         {
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
             {
-                base.ShowReaction();
-                SetTileFireImage();
+                ShowReaction();
             }
         }
 
     }
 
+    protected override void ShowReaction()
+    {
+        base.ShowReaction();
+        SetTileFireImage();
+    }
+
     public void StartFireTimer()
     {
-        OnTimerEnd += KillWithFireTrap;
+        playerFirstPos = player.transform.position;
         base.StartTimer(greenStart,yellowStart,totalLength);
     }
 
@@ -41,8 +46,24 @@ public class FireReact : React
     private void SetTileFireImage()
     {
         Tilemap tilemap = player.GetTileMap();
-        tilemap.SetTile(tilemap.WorldToCell(player.transform.position), fireTile);
+        tilemap.SetTile(tilemap.WorldToCell(playerFirstPos), fireTile);
+    }
 
-        OnTimerEnd -= KillWithFireTrap;
+    protected override void TimerEnd()
+    {
+        KillWithFireTrap();
+        //base.TimerEnd();
+    }
+
+    protected override void RedState()
+    {
+        player.SetFreeze(true);
+        //base.RedState();
+    }
+
+    protected override void YellowState()
+    {
+        player.SetFreeze(false);
+        //base.YellowState();
     }
 }
