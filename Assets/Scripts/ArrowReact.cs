@@ -31,10 +31,11 @@ public class ArrowReact : React
         base.ShowReaction();
     }
 
-    public void StartArrowTimer()
+    public void StartArrowTimer(float greenTimeReduction)
     {
+        float tempGreenStart = greenStart - greenTimeReduction;
         moveCoroutine = StartCoroutine(MoveArrow());
-        base.StartTimer(greenStart,yellowStart,totalLength);
+        base.StartTimer(tempGreenStart,yellowStart,totalLength);
     }
 
     IEnumerator MoveArrow() 

@@ -9,20 +9,19 @@ public class GridHandler : MonoBehaviour
 
     [SerializeField] SO_Grid gridData;
     [SerializeField] int allowedTreasureRow;
-    int gridSize;
-    int tileMapLength;
+
 
     #region Cache
     Tilemap tilemap;
+    int gridSize;
+    int tileMapLength;
+    #endregion
+
+    #region TilesContents
     List<Vector3Int> fireTrapPoses = new List<Vector3Int>();
     List<Vector3Int> arrowTrapPoses = new List<Vector3Int>();
     List<Vector3Int> treasurePoses = new List<Vector3Int>();
     List<Vector3Int> availablePoses = new List<Vector3Int>();
-    #endregion
-
-    #region Test
-    //[SerializeField] TextMeshProUGUI debugText;
-    //[SerializeField] Canvas canvas;
     #endregion
 
     void Awake()
@@ -114,17 +113,21 @@ public class GridHandler : MonoBehaviour
             return false;
     }
 
-    public bool isSteppedOnTreasure(Vector3 tileWorldPos)
+    public bool isSteppedOnTreasure(Vector3 tileWorldPos, out int coinsAmount)
     {
         Vector3Int cellGridPos = tilemap.WorldToCell(tileWorldPos);
         if (treasurePoses.Contains(cellGridPos))
         {
             tilemap.SetTile(cellGridPos, gridData.openedTreasureTile);
             treasurePoses.Remove(cellGridPos);
+            coinsAmount = gridData.GetTreasureCoins();
             return true;
         }
         else
+        {
+            coinsAmount = 0;
             return false;
+        }
     }
 
     public bool isSteppedOnArrowTrap(Vector3 tileWorldPos)

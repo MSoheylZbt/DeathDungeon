@@ -31,10 +31,11 @@ public class FireReact : React
         SetTileFireImage();
     }
 
-    public void StartFireTimer()
+    public void StartFireTimer(float greenTimeReduction)
     {
+        float tempGreenStart = greenStart - greenTimeReduction;
         playerFirstPos = player.transform.position;
-        base.StartTimer(greenStart,yellowStart,totalLength);
+        base.StartTimer(tempGreenStart,yellowStart,totalLength);
     }
 
     private void KillWithFireTrap()

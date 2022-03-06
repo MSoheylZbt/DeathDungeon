@@ -543,6 +543,74 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 289913025}
   m_CullTransparentMesh: 1
+--- !u!1 &382720304
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 382720305}
+  - component: {fileID: 382720307}
+  - component: {fileID: 382720306}
+  m_Layer: 0
+  m_Name: React Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &382720305
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 382720304}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.6175501, y: -3.128496, z: -11.368556}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &382720306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 382720304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 149a07732813f564abcd399e94b53cb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  reflexUI: {fileID: 543554890}
+  greenCoins: 3
+  arrowManager: {fileID: 1912800371}
+  yellowStart: 0.7
+  greenStart: 1.2
+  totalLength: 1.5
+--- !u!114 &382720307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 382720304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71dce851551f99c40a6e4506e51e7d09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  reflexUI: {fileID: 543554890}
+  greenCoins: 5
+  fireTile: {fileID: 11400000, guid: dd4e3a48d509eac408c118d4660d7e0b, type: 2}
+  yellowStart: 0.2
+  greenStart: 0.8
+  totalLength: 1
 --- !u!1001 &453458280
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3756,8 +3824,6 @@ GameObject:
   - component: {fileID: 2040269710}
   - component: {fileID: 2040269709}
   - component: {fileID: 2040269711}
-  - component: {fileID: 2040269712}
-  - component: {fileID: 2040269713}
   m_Layer: 0
   m_Name: knight
   m_TagString: Untagged
@@ -3843,40 +3909,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridHandler: {fileID: 1758670864}
---- !u!114 &2040269712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2040269708}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 149a07732813f564abcd399e94b53cb5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  reflexUI: {fileID: 543554890}
-  arrowManager: {fileID: 1912800371}
-  yellowStart: 0.7
-  greenStart: 1.2
-  totalLength: 1.5
---- !u!114 &2040269713
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2040269708}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71dce851551f99c40a6e4506e51e7d09, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  reflexUI: {fileID: 543554890}
-  fireTile: {fileID: 11400000, guid: dd4e3a48d509eac408c118d4660d7e0b, type: 2}
-  yellowStart: 0.2
-  greenStart: 0.8
-  totalLength: 1
+  data: {fileID: 11400000, guid: 68a02cc4c5a46c9458c3d980c54bbd70, type: 2}
+  reactManager: {fileID: 382720304}
 --- !u!1001 &7267101415392573240
 PrefabInstance:
   m_ObjectHideFlags: 0

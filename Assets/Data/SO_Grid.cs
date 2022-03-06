@@ -14,8 +14,9 @@ public class SO_Grid : ScriptableObject
     [SerializeField] AnimationCurve treasureCounts;
     [SerializeField] AnimationCurve arrowTrapCounts;
     [SerializeField] AnimationCurve fireTrapCounts;
+    [SerializeField] AnimationCurve treasureCoins;
 
-    [SerializeField] int difficultyLevel = 0;
+    int difficultyLevel = 0;
 
     [Header("Cache References")]
     public TileBase treasureTile;
@@ -41,5 +42,10 @@ public class SO_Grid : ScriptableObject
     public int GetFireTrapCounts()
     {
         return (int)fireTrapCounts.Evaluate(difficultyLevel);
+    }
+
+    public int GetTreasureCoins()
+    {
+        return (int)treasureCoins.Evaluate(difficultyLevel);
     }
 }

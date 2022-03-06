@@ -6,11 +6,11 @@ using UnityEngine.Tilemaps;
 public class Knight : MonoBehaviour
 {
     [SerializeField] GridHandler gridHandler;
-
-    int health = 3;
+    [SerializeField] Knight_Data data;
 
     #region Cache
     Tilemap tilemap;
+    [SerializeField] GameObject reactManager;
     ArrowReact arrowReact;
     FireReact fireReact;
     #endregion
@@ -20,13 +20,13 @@ public class Knight : MonoBehaviour
     private void Start()
     {
         tilemap = gridHandler.GetTileMap();
-
-        arrowReact = GetComponent<ArrowReact>();
+        data.ResetData();
+        arrowReact = reactManager.GetComponent<ArrowReact>();
+        fireReact = reactManager.GetComponent<FireReact>();
         arrowReact.Init(this);
-
-        fireReact = GetComponent<FireReact>();
         fireReact.Init(this);
     }
+
 
     private void Update()
     {
@@ -77,19 +77,41 @@ public class Knight : MonoBehaviour
 
     private void TileContentCheck(Vector3 newPos)
     {
-        if (gridHandler.isSteppedOnTreasure(newPos))
+        int coinsAmount = 0;
+
+        if (gridHandler.isSteppedOnTreasure(newPos,out coinsAmount))
         {
+            AddCoins(coinsAmount);
             //Debug.Log("<color=red> Trapped! </color> ");
         }
         else if (gridHandler.isSteppedOnFireTrap(newPos))
         {
-            fireReact.StartFireTimer();
-            //Debug.Log("<color=yellow> Treasure! </color> ");
+            if (data.invisiblePotionCount > 0)
+                data.invisiblePotionCount--;
+            else
+                fireReact.StartFireTimer(GetReductionTime());
+
         } else if(gridHandler.isSteppedOnArrowTrap(newPos))
         {
-            SetFreeze(true);
-            arrowReact.StartArrowTimer();
+            if(data.invisiblePotionCount > 0)
+                data.invisiblePotionCount--;
+            else
+            {
+                SetFreeze(true);
+                arrowReact.StartArrowTimer(GetReductionTime());
+            }
         }
+    }
+
+    private float GetReductionTime()
+    {
+        if (data.greenTimePotionCount > 0)
+        {
+            data.greenTimePotionCount--;
+            return data.greenTimeReduction;
+        }
+        else
+            return 0;
     }
 
     private bool isBlock(Vector3 newPos,Vector3 dir,float rayDistance)
@@ -103,17 +125,58 @@ public class Knight : MonoBehaviour
     public void TakeDamage()
     {
         print("<color=red> Damage taken! </color>");
-        health--;
-        if(health == 0)
+
+        if(data.healthPotionCount > 0)
         {
-            Die();
+            data.healthPotionCount--;
+            //TODO :: Animation :: Removie a heart then use a potion.
+            return;
         }
+        else
+        {
+            data.currentHealth--;
+            if (data.currentHealth == 0)
+            {
+                Die();
+            }
+        }
+    }
+
+    public void AddCoins(int coinsAmount)
+    {
+        data.currentCoins += coinsAmount;
     }
 
     public void Die()
     {
         print("Die Motherfucker");
         gameObject.SetActive(false);
+    }
+
+    public void UpgradeArmor()
+    {
+        data.maxHealth++;
+    }
+
+    public void BuyHealthPotion(int price)
+    {
+        data.currentCoins -= price;
+        if(data.currentHealth == data.maxHealth)
+            data.healthPotionCount++;
+        else
+           data.currentHealth++;
+    }
+
+    public void BuyInvisiblePotion(int price)
+    {
+        data.currentCoins -= price;
+        data.invisiblePotionCount++;
+    }
+
+    public void BuyGreenTimePotionCount(int price)
+    {
+        data.currentCoins -= price;
+        data.greenTimePotionCount++;
     }
 
     public Vector3Int GetPlayerTilePos()

@@ -15,6 +15,7 @@ public class React : MonoBehaviour
 {
     [Header("From React")]
     [SerializeField] ReflexUI reflexUI;
+    [SerializeField] int greenCoins;
 
     TimerState currentState = TimerState.NotStarted;
 
@@ -106,6 +107,7 @@ public class React : MonoBehaviour
             case TimerState.Green:
                 ResetTimer();
                 player.SetFreeze(false);
+                player.AddCoins(greenCoins);
                 print("<color=green> Green Pressed! </color>");
                 break;
 
