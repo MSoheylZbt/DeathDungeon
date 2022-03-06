@@ -9,8 +9,9 @@ public class Knight : MonoBehaviour
     [SerializeField] Knight_Data data;
 
     #region Cache
-    Tilemap tilemap;
     [SerializeField] GameObject reactManager;
+    Tilemap tilemap;
+    Animator animator;
     ArrowReact arrowReact;
     FireReact fireReact;
     #endregion
@@ -21,6 +22,7 @@ public class Knight : MonoBehaviour
     {
         tilemap = gridHandler.GetTileMap();
         data.ResetData();
+        animator = GetComponent<Animator>();
         arrowReact = reactManager.GetComponent<ArrowReact>();
         fireReact = reactManager.GetComponent<FireReact>();
         arrowReact.Init(this);
@@ -58,6 +60,7 @@ public class Knight : MonoBehaviour
             Vector3 newPos = new Vector3(transform.position.x - tilemap.cellSize.x, transform.position.y, transform.position.z);
             if (isBlock(newPos,-transform.right,tilemap.cellSize.x) == false)
             {
+                animator.SetTrigger("Left");
                 transform.position = newPos;
                 TileContentCheck(newPos);
             }
@@ -68,6 +71,7 @@ public class Knight : MonoBehaviour
             Vector3 newPos = new Vector3(transform.position.x + tilemap.cellSize.x, transform.position.y, transform.position.z);
             if (isBlock(newPos,transform.right,tilemap.cellSize.x) == false)
             {
+                animator.SetTrigger("Right");
                 transform.position = newPos;
                 TileContentCheck(newPos);
             }

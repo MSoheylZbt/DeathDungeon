@@ -361,7 +361,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 140467448}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.98, y: 6.2742043, z: 9.905785}
+  m_LocalPosition: {x: 4.14, y: 6.2742043, z: 9.905785}
   m_LocalScale: {x: 2.0390625, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 687841465}
@@ -3341,7 +3341,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1409122380}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.39, y: 6.2742043, z: 9.905785}
+  m_LocalPosition: {x: -3.19, y: 6.2742043, z: 9.905785}
   m_LocalScale: {x: 2.0390625, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 687841465}
@@ -3824,6 +3824,7 @@ GameObject:
   - component: {fileID: 2040269710}
   - component: {fileID: 2040269709}
   - component: {fileID: 2040269711}
+  - component: {fileID: 2040269712}
   m_Layer: 0
   m_Name: knight
   m_TagString: Untagged
@@ -3911,6 +3912,25 @@ MonoBehaviour:
   gridHandler: {fileID: 1758670864}
   data: {fileID: 11400000, guid: 68a02cc4c5a46c9458c3d980c54bbd70, type: 2}
   reactManager: {fileID: 382720304}
+--- !u!95 &2040269712
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2040269708}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3fa12a41e12461a489cbaeaaceecd45e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &7267101415392573240
 PrefabInstance:
   m_ObjectHideFlags: 0
