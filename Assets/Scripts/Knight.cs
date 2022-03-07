@@ -10,6 +10,7 @@ public class Knight : MonoBehaviour
 
     #region Cache
     [SerializeField] GameObject reactManager;
+    Vector2 moveAmount = new Vector2();
     Tilemap tilemap;
     Animator animator;
     ArrowReact arrowReact;
@@ -18,66 +19,104 @@ public class Knight : MonoBehaviour
 
     bool isFreezed = false;
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(this);
+    }
+
     private void Start()
     {
-        tilemap = gridHandler.GetTileMap();
         data.ResetData();
         animator = GetComponent<Animator>();
 
-        arrowReact = reactManager.GetComponent<ArrowReact>();
-        fireReact = reactManager.GetComponent<FireReact>();
-        arrowReact.Init(this);
-        fireReact.Init(this);
+        if(gridHandler)
+        {
+            tilemap = gridHandler.GetTileMap();
+            moveAmount.x = tilemap.cellSize.x;
+            moveAmount.y = tilemap.cellSize.y;
+            arrowReact = reactManager.GetComponent<ArrowReact>();
+            fireReact = reactManager.GetComponent<FireReact>();
+            arrowReact.Init(this);
+            fireReact.Init(this);
+        }
     }
 
 
     private void Update()
     {
+        Move();
+    }
+
+
+
+    private void Move()
+    {
         if (isFreezed)
             return;
 
-        if(Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            Vector3 newPos = new Vector3(transform.position.x, transform.position.y + tilemap.cellSize.y, transform.position.z);
-            if (isBlock(newPos,transform.up,tilemap.cellSize.y) == false)
-            {
-                transform.position = newPos;
-                TileContentCheck(newPos);
-            }
+            MovingCheck(KeyCode.UpArrow);
         }
 
-        if(Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            Vector3 newPos = new Vector3(transform.position.x, transform.position.y - tilemap.cellSize.y, transform.position.z);
-            if (isBlock(newPos,-transform.up,tilemap.cellSize.y) == false)
-            {
-                transform.position = newPos;
-                TileContentCheck(newPos);
-            }
+            MovingCheck(KeyCode.DownArrow);
         }
 
-        if(Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            Vector3 newPos = new Vector3(transform.position.x - tilemap.cellSize.x, transform.position.y, transform.position.z);
-            if (isBlock(newPos,-transform.right,tilemap.cellSize.x) == false)
-            {
-                animator.SetBool("Left",true);
-                transform.position = newPos;
-                TileContentCheck(newPos);
-            }
+            animator.SetBool("Left", true);
+            MovingCheck(KeyCode.LeftArrow);
         }
 
-        if(Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            Vector3 newPos = new Vector3(transform.position.x + tilemap.cellSize.x, transform.position.y, transform.position.z);
-            if (isBlock(newPos,transform.right,tilemap.cellSize.x) == false)
-            {
-                animator.SetBool("Left",false);
-                transform.position = newPos;
-                TileContentCheck(newPos);
-            }
-
+            animator.SetBool("Left", false);
+            MovingCheck(KeyCode.RightArrow);
         }
+    }
+
+    private void MovingCheck(KeyCode pressedKey)
+    {
+        Vector3 newPos = new Vector3();
+        Vector3 rayDir = new Vector3();
+        float cellXY = 0f;
+
+        switch (pressedKey)
+        {
+            case KeyCode.UpArrow:
+                newPos = new Vector3(transform.position.x, transform.position.y + moveAmount.y, transform.position.z);
+                rayDir = transform.up;
+                cellXY = moveAmount.y;
+                break;
+
+            case KeyCode.DownArrow:
+                newPos = new Vector3(transform.position.x, transform.position.y - moveAmount.y, transform.position.z);
+                rayDir = -transform.up;
+                cellXY = moveAmount.y;
+                break;
+
+            case KeyCode.LeftArrow:
+                newPos = new Vector3(transform.position.x - moveAmount.x, transform.position.y, transform.position.z);
+                rayDir = -transform.right;
+                cellXY = moveAmount.x;
+                break;
+
+            case KeyCode.RightArrow:
+                newPos = new Vector3(transform.position.x + moveAmount.x, transform.position.y, transform.position.z);
+                rayDir = transform.right;
+                cellXY = moveAmount.x;
+                break;
+        }
+
+        if (isBlock(newPos,rayDir,cellXY) == false)
+        {
+            transform.position = newPos;
+            if (gridHandler)
+                TileContentCheck(newPos);
+        }
+
     }
 
     //TODO :: REFACTOR

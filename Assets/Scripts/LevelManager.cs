@@ -8,13 +8,13 @@ using UnityEngine.Tilemaps;
 public class LevelManager : MonoBehaviour
 {
     Tilemap tilemap;
-    [SerializeField] TileBase[] closedDoor = new TileBase[4];
+    Animator animator;
     List<Vector3Int> doorWorldPos = new List<Vector3Int>();
-    Vector3Int[] doorGridPos = new Vector3Int[4];
 
     public void Init()
     {
         tilemap = GetComponentInChildren<Tilemap>();
+        animator = GetComponent<Animator>();
         SetAllTiles();
     }
 
@@ -24,7 +24,6 @@ public class LevelManager : MonoBehaviour
         for (int i = 0; i < size; i++)
         {
             Vector3Int gridPos = new Vector3Int(i % tilemap.size.x, i / tilemap.size.x, 0) + tilemap.origin; // X is equal to Y
-            doorGridPos[i] = gridPos;
             Vector3Int posWithoutOffset = new Vector3Int(gridPos.x + (int)tilemap.orientationMatrix.m03, gridPos.y + (int)tilemap.orientationMatrix.m13, 0);
             doorWorldPos.Add(posWithoutOffset);
         }
@@ -34,9 +33,13 @@ public class LevelManager : MonoBehaviour
     {
         if(doorWorldPos.Contains(tilemap.WorldToCell(playerPos)))
         {
-            tilemap.SetTiles(doorGridPos,closedDoor);
             print("Level End");
-            //SceneManager.LoadScene(0);
+            animator.SetTrigger("OpenDoor");
         }
+    }
+
+    public void LoadLevel()
+    {
+        SceneManager.LoadScene(1);
     }
 }
