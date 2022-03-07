@@ -8,8 +8,8 @@ public class GridHandler : MonoBehaviour
 {
 
     [SerializeField] SO_Grid gridData;
+    [SerializeField] LevelManager levelManager;
     [SerializeField] int allowedTreasureRow;
-
 
     #region Cache
     Tilemap tilemap;
@@ -24,16 +24,23 @@ public class GridHandler : MonoBehaviour
     List<Vector3Int> availablePoses = new List<Vector3Int>();
     #endregion
 
-    void Awake()
+    private void Awake()
+    {
+        InitGrid();
+        levelManager.Init();
+        GeneratingGrid();
+    }
+
+    public void InitGrid()
     {
         tilemap = GetComponentInChildren<Tilemap>();
         gridSize = tilemap.size.x * tilemap.size.y;
         tileMapLength = tilemap.size.x;
-        GeneratingGrid();
     }
 
     public void GeneratingGrid()
     {
+        print("Generating grid");
         gridData.SetRandomDifficulty();
         InitAvailablePoses();
         GenerateTilesContent(gridData.GetTreasureCount(), allowedTreasureRow, treasurePoses,gridData.treasureTile);
@@ -83,7 +90,6 @@ public class GridHandler : MonoBehaviour
         {
             int randomNumber = Random.Range(0, availablePoses.Count);
             Vector3Int gridPos = availablePoses[randomNumber];
-            //print("Without origin:" + new Vector3Int(randomNumber % tileMapSize, randomNumber / tileMapSize, 0));
 
             if (randomNumber < (tileMapLength * allowedRow))
             {
@@ -94,11 +100,13 @@ public class GridHandler : MonoBehaviour
             {
                 trapList.Add(gridPos);
                 availablePoses.Remove(gridPos);
-                //Debug.Log("Random number is : " + randomNumber + " grid pos is : " + gridPos + " Final is : " + (tilemap.origin + gridPos).ToString());
             }
-
-            //Instantiate(debugText,tilemap.CellToWorld(tilemap.origin + gridPos),Quaternion.identity);
         }
+    }
+
+    public void CheckForFinalDoor(Vector3 newPos)
+    {
+        levelManager.CheckForLevelFinal(newPos);
     }
 
     public bool isSteppedOnFireTrap(Vector3 tileWorldPos)

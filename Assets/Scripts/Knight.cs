@@ -23,6 +23,7 @@ public class Knight : MonoBehaviour
         tilemap = gridHandler.GetTileMap();
         data.ResetData();
         animator = GetComponent<Animator>();
+
         arrowReact = reactManager.GetComponent<ArrowReact>();
         fireReact = reactManager.GetComponent<FireReact>();
         arrowReact.Init(this);
@@ -60,7 +61,7 @@ public class Knight : MonoBehaviour
             Vector3 newPos = new Vector3(transform.position.x - tilemap.cellSize.x, transform.position.y, transform.position.z);
             if (isBlock(newPos,-transform.right,tilemap.cellSize.x) == false)
             {
-                animator.SetTrigger("Left");
+                animator.SetBool("Left",true);
                 transform.position = newPos;
                 TileContentCheck(newPos);
             }
@@ -71,7 +72,7 @@ public class Knight : MonoBehaviour
             Vector3 newPos = new Vector3(transform.position.x + tilemap.cellSize.x, transform.position.y, transform.position.z);
             if (isBlock(newPos,transform.right,tilemap.cellSize.x) == false)
             {
-                animator.SetTrigger("Right");
+                animator.SetBool("Left",false);
                 transform.position = newPos;
                 TileContentCheck(newPos);
             }
@@ -79,6 +80,7 @@ public class Knight : MonoBehaviour
         }
     }
 
+    //TODO :: REFACTOR
     private void TileContentCheck(Vector3 newPos)
     {
         int coinsAmount = 0;
@@ -104,6 +106,10 @@ public class Knight : MonoBehaviour
                 SetFreeze(true);
                 arrowReact.StartArrowTimer(GetReductionTime());
             }
+        } 
+        else
+        {
+            gridHandler.CheckForFinalDoor(transform.position);
         }
     }
 

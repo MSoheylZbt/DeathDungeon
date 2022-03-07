@@ -40,9 +40,9 @@ public class ArrowReact : React
 
     IEnumerator MoveArrow() 
     {
-        float arrowSpeed = 0f;
-        GameObject arrowObj = new GameObject();
-        InitialArrowManager(out arrowSpeed,out arrowObj);
+        arrowManager.SetPlayerTilePos(player.GetPlayerTilePos());
+        float arrowSpeed = arrowManager.GetAverageVelocity(player.transform.position, totalLength);
+        GameObject arrowObj = arrowManager.GetCorrectArrow();
         //print(totalLength);
 
         while (elapsedTime < totalLength)
@@ -56,11 +56,5 @@ public class ArrowReact : React
         arrowManager.ResetPosition();
     }
 
-    private void InitialArrowManager(out float arrowAvgSpeed,out GameObject arrowObj)
-    {
-        arrowManager.SetPlayerTilePos(player.GetPlayerTilePos());
-        arrowAvgSpeed = arrowManager.GetAverageVelocity(player.transform.position, totalLength);
-        arrowObj = arrowManager.GetCorrectArrow();
-    }
 
 }
