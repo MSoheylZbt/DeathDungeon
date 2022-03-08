@@ -37,9 +37,9 @@ public class React : MonoBehaviour
     //public delegate void RedState();
     //public static event RedState OnStateRed;
 
-    public void Init(Knight knight)
+    public void Init()
     {
-        player = knight;
+        player = Knight.instance;
         reflexUI.Init();
     }
 

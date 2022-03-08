@@ -6,7 +6,7 @@ using UnityEngine;
 public class ArrowReact : React
 {
     [Header("From ArrowReact")]
-    [SerializeField] ArrowTrapManager arrowManager;
+    ArrowTrapManager arrowManager;
     [SerializeField] float yellowStart;
     [SerializeField] float greenStart;
     [SerializeField] float totalLength;
@@ -22,6 +22,12 @@ public class ArrowReact : React
                 ShowReaction();
             }
         }
+    }
+
+    public void Init(ArrowTrapManager arrowTrapManager)
+    {
+        base.Init();
+        arrowManager = arrowTrapManager;
     }
 
     protected override void ShowReaction()

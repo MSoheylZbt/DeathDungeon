@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 2
   currentHealth: 2
-  currentCoins: 177
+  currentCoins: 0
   invisiblePotionCount: 0
   healthPotionCount: 0
   greenTimePotionCount: 0
   greenTimeReduction: 0.2
+  moveAmount: {x: 1, y: 1}

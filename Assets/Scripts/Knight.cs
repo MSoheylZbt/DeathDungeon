@@ -6,14 +6,14 @@ using UnityEngine.SceneManagement;
 
 public class Knight : MonoBehaviour
 {
-    [SerializeField] GridHandler gridHandler;
     [SerializeField] Knight_Data data;
+    public static Knight instance;
 
     #region Cache
-    [SerializeField] GameObject reactManager;
     Vector2 moveAmount = new Vector2();
     Tilemap tilemap;
     Animator animator;
+    GridHandler gridHandler;
     ArrowReact arrowReact;
     FireReact fireReact;
     #endregion
@@ -27,36 +27,33 @@ public class Knight : MonoBehaviour
 
     private void KeepKnight()
     {
-        DontDestroyOnLoad(this);
-        Knight[] knights = FindObjectsOfType<Knight>();
-        if (knights.Length > 1)
+        if(instance != null)
+            Destroy(gameObject);
+        else
         {
-            Destroy(knights[1].gameObject);
+            instance = this;
+            DontDestroyOnLoad(gameObject);
         }
     }
 
-    private void Start()
+    public void Init(GridHandler handler, ReactManager reactManager)
     {
-        //print("Start");
-        InitKnightFunctions();
-    }
-
-    public void InitKnightFunctions()
-    {
+        print("Long Init");
+        gridHandler = handler;
         animator = GetComponent<Animator>();
-        //print("Knight Init");
+        tilemap = gridHandler.GetTileMap();
+        moveAmount.x = tilemap.cellSize.x;
+        moveAmount.y = tilemap.cellSize.y;
 
-        if (gridHandler)
-        {
-            print("Grid handler set ");
-            tilemap = gridHandler.GetTileMap();
-            moveAmount.x = tilemap.cellSize.x;
-            moveAmount.y = tilemap.cellSize.y;
-            arrowReact = reactManager.GetComponent<ArrowReact>();
-            fireReact = reactManager.GetComponent<FireReact>();
-            arrowReact.Init(this);
-            fireReact.Init(this);
-        }
+        arrowReact = reactManager.arrowReact;
+        fireReact = reactManager.fireReact;
+    }
+
+    public void Init()
+    {
+        print("Short Init");
+        animator = GetComponent<Animator>();
+        moveAmount = data.moveAmount;
     }
 
     private void Update()

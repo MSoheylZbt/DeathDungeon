@@ -13,7 +13,7 @@ public class Knight_Data : ScriptableObject
     public int healthPotionCount;
     public int greenTimePotionCount;
     public float greenTimeReduction;
-
+    public Vector2 moveAmount;
 
     public void ResetData()
     {

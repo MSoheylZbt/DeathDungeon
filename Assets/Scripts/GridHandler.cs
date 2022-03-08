@@ -8,10 +8,10 @@ public class GridHandler : MonoBehaviour
 {
 
     [SerializeField] SO_Grid gridData;
-    [SerializeField] LevelManager levelManager;
     [SerializeField] int allowedTreasureRow;
 
     #region Cache
+    LevelManager levelManager;
     Tilemap tilemap;
     int gridSize;
     int tileMapLength;
@@ -24,21 +24,21 @@ public class GridHandler : MonoBehaviour
     List<Vector3Int> availablePoses = new List<Vector3Int>();
     #endregion
 
-    private void Awake()
+    public void Init(LevelManager lvlManager)
     {
+        levelManager = lvlManager;
         InitGrid();
-        levelManager.Init();
         GeneratingGrid();
     }
 
-    public void InitGrid()
+    private void InitGrid()
     {
         tilemap = GetComponentInChildren<Tilemap>();
         gridSize = tilemap.size.x * tilemap.size.y;
         tileMapLength = tilemap.size.x;
     }
 
-    public void GeneratingGrid()
+    private void GeneratingGrid()
     {
         gridData.SetRandomDifficulty();
         InitAvailablePoses();

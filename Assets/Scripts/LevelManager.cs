@@ -7,21 +7,22 @@ using UnityEngine.Tilemaps;
 
 public class LevelManager : MonoBehaviour
 {
-    #region cache
+    [SerializeField] int shopLevelIndex = 4;
+
+    #region Cache
     static int levelIndex = 0; // Is static for remaining during level transition.
+
+    //Knight knight;
     Tilemap tilemap;
     Animator animator;
+
     Vector3 playerFirstPos = new Vector3();
-    #endregion
-
-    [SerializeField] int shopLevelIndex = 4;
-    [SerializeField] Knight knight;
     List<Vector3Int> doorWorldPos = new List<Vector3Int>();
-
+    #endregion
     public void Init()
     {
-        playerFirstPos = knight.transform.position;
-        //print(playerFirstPos);
+        //knight = Knight.instance;
+        playerFirstPos = Knight.instance.transform.position;
         tilemap = GetComponentInChildren<Tilemap>();
         animator = GetComponent<Animator>();
         SetAllTiles();
@@ -44,27 +45,27 @@ public class LevelManager : MonoBehaviour
         {
             //print("Level End");
             animator.SetBool("OpenDoor",true);
-            knight.gameObject.SetActive(false);
+            Knight.instance.gameObject.SetActive(false);
         }
     }
 
     public void LoadLevel()//Calling from animation event
     {
-        knight.transform.position = playerFirstPos;
+        Knight.instance.transform.position = playerFirstPos;
 
         levelIndex++;
         print("level index: " + levelIndex);
         if (levelIndex == shopLevelIndex)
         {
             levelIndex = 0;
-            knight.SetMoveAmount(new Vector2(tilemap.cellSize.x, tilemap.cellSize.y));
+            Knight.instance.SetMoveAmount(new Vector2(tilemap.cellSize.x, tilemap.cellSize.y));
             SceneManager.LoadScene(1);
         }
         else
             SceneManager.LoadScene(0);
 
         animator.SetBool("OpenDoor", false);
-        knight.gameObject.SetActive(true);
+        Knight.instance.gameObject.SetActive(true);
 
     }
 }
