@@ -8,25 +8,15 @@ using UnityEngine.Tilemaps;
 public class LevelManager : MonoBehaviour
 {
     #region cache
+    static int levelIndex = 0; // Is static for remaining during level transition.
     Tilemap tilemap;
     Animator animator;
-    int levelIndex = 0;
     Vector3 playerFirstPos = new Vector3();
     #endregion
 
     [SerializeField] int shopLevelIndex = 4;
     [SerializeField] Knight knight;
     List<Vector3Int> doorWorldPos = new List<Vector3Int>();
-
-    private void Awake()
-    {
-        DontDestroyOnLoad(this);
-        LevelManager[] managers = FindObjectsOfType<LevelManager>();
-        if (managers.Length > 1)
-        {
-            Destroy(managers[1].gameObject);
-        }
-    }
 
     public void Init()
     {
@@ -60,21 +50,21 @@ public class LevelManager : MonoBehaviour
 
     public void LoadLevel()//Calling from animation event
     {
-        print("LOADING LEVEL");
         knight.transform.position = playerFirstPos;
-        animator.SetBool("OpenDoor", false);
 
         levelIndex++;
+        print("level index: " + levelIndex);
         if (levelIndex == shopLevelIndex)
         {
             levelIndex = 0;
+            knight.SetMoveAmount(new Vector2(tilemap.cellSize.x, tilemap.cellSize.y));
             SceneManager.LoadScene(1);
         }
         else
             SceneManager.LoadScene(0);
 
+        animator.SetBool("OpenDoor", false);
         knight.gameObject.SetActive(true);
-        knight.InitKnightFunctions();
 
     }
 }

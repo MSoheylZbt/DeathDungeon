@@ -37,15 +37,14 @@ public class Knight : MonoBehaviour
 
     private void Start()
     {
-        print("Start");
+        //print("Start");
         InitKnightFunctions();
     }
 
     public void InitKnightFunctions()
     {
-        data.ResetData();
         animator = GetComponent<Animator>();
-        print("Knight Init");
+        //print("Knight Init");
 
         if (gridHandler)
         {
@@ -131,7 +130,7 @@ public class Knight : MonoBehaviour
             transform.position = newPos;
             if (gridHandler)
             {
-                print("Grid Handling");
+                //print("Grid Handling");
                 TileContentCheck(newPos);
             }
         }
@@ -261,5 +260,10 @@ public class Knight : MonoBehaviour
     public void SetFreeze(bool value)
     {
         isFreezed = value;
+    }
+
+    public void SetMoveAmount(Vector2 amount)
+    {
+        moveAmount = amount;
     }
 }
