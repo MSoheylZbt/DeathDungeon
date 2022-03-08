@@ -40,7 +40,6 @@ public class GridHandler : MonoBehaviour
 
     public void GeneratingGrid()
     {
-        print("Generating grid");
         gridData.SetRandomDifficulty();
         InitAvailablePoses();
         GenerateTilesContent(gridData.GetTreasureCount(), allowedTreasureRow, treasurePoses,gridData.treasureTile);

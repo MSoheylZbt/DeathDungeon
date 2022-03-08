@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
 
 public class Knight : MonoBehaviour
 {
@@ -21,16 +22,34 @@ public class Knight : MonoBehaviour
 
     private void Awake()
     {
+        KeepKnight();
+    }
+
+    private void KeepKnight()
+    {
         DontDestroyOnLoad(this);
+        Knight[] knights = FindObjectsOfType<Knight>();
+        if (knights.Length > 1)
+        {
+            Destroy(knights[1].gameObject);
+        }
     }
 
     private void Start()
     {
+        print("Start");
+        InitKnightFunctions();
+    }
+
+    public void InitKnightFunctions()
+    {
         data.ResetData();
         animator = GetComponent<Animator>();
+        print("Knight Init");
 
-        if(gridHandler)
+        if (gridHandler)
         {
+            print("Grid handler set ");
             tilemap = gridHandler.GetTileMap();
             moveAmount.x = tilemap.cellSize.x;
             moveAmount.y = tilemap.cellSize.y;
@@ -41,13 +60,10 @@ public class Knight : MonoBehaviour
         }
     }
 
-
     private void Update()
     {
         Move();
     }
-
-
 
     private void Move()
     {
@@ -114,7 +130,10 @@ public class Knight : MonoBehaviour
         {
             transform.position = newPos;
             if (gridHandler)
+            {
+                print("Grid Handling");
                 TileContentCheck(newPos);
+            }
         }
 
     }
@@ -122,6 +141,7 @@ public class Knight : MonoBehaviour
     //TODO :: REFACTOR
     private void TileContentCheck(Vector3 newPos)
     {
+        //print("Checking Contents");
         int coinsAmount = 0;
 
         if (gridHandler.isSteppedOnTreasure(newPos,out coinsAmount))
