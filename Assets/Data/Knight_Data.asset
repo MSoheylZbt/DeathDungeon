@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73154d84d49479540a2bdce1a0f4c213, type: 3}
   m_Name: Knight_Data
   m_EditorClassIdentifier: 
-  currentCoins: 40
+  currentCoins: 5
   currentHealth: 3
-  invisiblePotionCount: 0
+  invisiblePotionCount: 3
   healthPotionCount: 0
-  greenTimePotionCount: 0
+  greenTimePotionCount: 2
   greenTimeReduction: 0.2
   maxHealth: 3
   moveAmount: {x: 1, y: 1}
