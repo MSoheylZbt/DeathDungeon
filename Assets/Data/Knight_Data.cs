@@ -5,15 +5,18 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Player")]
 public class Knight_Data : ScriptableObject
 {
-    public int maxHealth = 4;
-    public int currentHealth;
-
+    [Header("Playtime parameters")]
     public int currentCoins;
+    public int currentHealth;
     public int invisiblePotionCount;
     public int healthPotionCount;
     public int greenTimePotionCount;
     public float greenTimeReduction;
+
+    [Header("Player Parameters")]
+    public int maxHealth = 4;
     public Vector2 moveAmount;
+
 
     public void ResetData()
     {

@@ -218,31 +218,6 @@ public class Knight : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void UpgradeArmor()
-    {
-        data.maxHealth++;
-    }
-
-    public void BuyHealthPotion(int price)
-    {
-        data.currentCoins -= price;
-        if(data.currentHealth == data.maxHealth)
-            data.healthPotionCount++;
-        else
-           data.currentHealth++;
-    }
-
-    public void BuyInvisiblePotion(int price)
-    {
-        data.currentCoins -= price;
-        data.invisiblePotionCount++;
-    }
-
-    public void BuyGreenTimePotionCount(int price)
-    {
-        data.currentCoins -= price;
-        data.greenTimePotionCount++;
-    }
 
     public Vector3Int GetPlayerTilePos()
     {
