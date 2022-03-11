@@ -16,7 +16,7 @@ public class Knight_Data : ScriptableObject
     [Header("Player Parameters")]
     public int maxHealth = 4;
     public Vector2 moveAmount;
-
+    public Vector3 playerFirstPos;
 
     public void ResetData()
     {

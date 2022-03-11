@@ -12,17 +12,13 @@ public class LevelManager : MonoBehaviour
     #region Cache
     static int levelIndex = 0; // Is static for remaining during level transition.
 
-    //Knight knight;
     Tilemap tilemap;
     Animator animator;
 
-    Vector3 playerFirstPos = new Vector3();
     List<Vector3Int> doorWorldPos = new List<Vector3Int>();
     #endregion
     public void Init()
     {
-        //knight = Knight.instance;
-        playerFirstPos = Knight.instance.transform.position;
         tilemap = GetComponentInChildren<Tilemap>();
         animator = GetComponent<Animator>();
         SetAllTiles();
@@ -51,10 +47,10 @@ public class LevelManager : MonoBehaviour
 
     public void LoadLevel()//Calling from animation event
     {
-        Knight.instance.transform.position = playerFirstPos;
+        Knight.instance.transform.position = Knight.instance.GetPlayerFirstPos();
 
         levelIndex++;
-        print("level index: " + levelIndex);
+        //print("level index: " + levelIndex);
         if (levelIndex == shopLevelIndex)
         {
             levelIndex = 0;
@@ -67,5 +63,11 @@ public class LevelManager : MonoBehaviour
         animator.SetBool("OpenDoor", false);
         Knight.instance.gameObject.SetActive(true);
 
+    }
+
+    public void LoadLevelFromShop()
+    {
+        Knight.instance.transform.position = Knight.instance.GetPlayerFirstPos();
+        SceneManager.LoadScene(0);
     }
 }

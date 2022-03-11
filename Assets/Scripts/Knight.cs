@@ -39,6 +39,8 @@ public class Knight : MonoBehaviour
     public void Init(GridHandler handler, ReactManager reactManager)
     {
         print("Long Init");
+        data.playerFirstPos = transform.position;
+
         gridHandler = handler;
         animator = GetComponent<Animator>();
         tilemap = gridHandler.GetTileMap();
@@ -237,5 +239,10 @@ public class Knight : MonoBehaviour
     public void SetMoveAmount(Vector2 amount)
     {
         moveAmount = amount;
+    }
+
+    public Vector3 GetPlayerFirstPos()
+    {
+        return data.playerFirstPos;
     }
 }
