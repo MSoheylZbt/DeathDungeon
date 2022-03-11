@@ -33,8 +33,8 @@ public class FireReact : React
 
     public void StartFireTimer(float greenTimeReduction)
     {
-        float tempGreenStart = greenStart - greenTimeReduction;
         playerFirstPos = player.transform.position;
+        float tempGreenStart = greenStart - greenTimeReduction;
         base.StartTimer(tempGreenStart,yellowStart,totalLength);
     }
 

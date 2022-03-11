@@ -38,7 +38,6 @@ public class Knight : MonoBehaviour
 
     public void Init(GridHandler handler, ReactManager reactManager)
     {
-        print("Long Init");
         data.playerFirstPos = transform.position;
 
         gridHandler = handler;
@@ -53,7 +52,6 @@ public class Knight : MonoBehaviour
 
     public void Init()
     {
-        print("Short Init");
         animator = GetComponent<Animator>();
         moveAmount = data.moveAmount;
     }
