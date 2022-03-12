@@ -96,9 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d926e6376559cd43912b5e9ca62c3dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridHandler: {fileID: 0}
   data: {fileID: 11400000, guid: 68a02cc4c5a46c9458c3d980c54bbd70, type: 2}
-  reactManager: {fileID: 0}
 --- !u!95 &1833621339542340215
 Animator:
   serializedVersion: 3

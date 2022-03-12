@@ -14,8 +14,8 @@ public enum TimerState
 public class React : MonoBehaviour
 {
     [Header("From React")]
-    [SerializeField] ReflexUI reflexUI;
     [SerializeField] int greenCoins;
+    ReflexUI reflexUI;
 
     TimerState currentState = TimerState.NotStarted;
 
@@ -31,15 +31,11 @@ public class React : MonoBehaviour
 
     #endregion
 
-    //public delegate void TimerEnd();
-    //public static event TimerEnd OnTimerEnd;
 
-    //public delegate void RedState();
-    //public static event RedState OnStateRed;
-
-    public void Init()
+    public void Init(ReflexUI refUI)
     {
         player = Knight.instance;
+        reflexUI = refUI;
         reflexUI.Init();
     }
 

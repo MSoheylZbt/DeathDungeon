@@ -395,55 +395,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 125498180}
   m_CullTransparentMesh: 1
---- !u!1 &178703684
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 178703686}
-  - component: {fileID: 178703685}
-  m_Layer: 0
-  m_Name: Buying
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &178703685
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 178703684}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc492d22545f98e4890fcb20910a56ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  knightData: {fileID: 11400000, guid: 68a02cc4c5a46c9458c3d980c54bbd70, type: 2}
-  buyData: {fileID: 11400000, guid: bf9454abffeade94d8f421eb6c95e4e9, type: 2}
-  upgradeTXT: {fileID: 224591675}
-  healthTXT: {fileID: 125498182}
-  InvisTXT: {fileID: 2123852734}
-  greenTXT: {fileID: 59582857}
---- !u!4 &178703686
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 178703684}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 549.7183, y: 693.9269, z: -336.4469}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &224591673
 GameObject:
   m_ObjectHideFlags: 0
@@ -665,7 +616,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 178703685}
+      - m_Target: {fileID: 1356346953}
         m_TargetAssemblyTypeName: Buying, Assembly-CSharp
         m_MethodName: BuyHealthPotion
         m_Mode: 1
@@ -991,7 +942,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 178703685}
+      - m_Target: {fileID: 1356346953}
         m_TargetAssemblyTypeName: Buying, Assembly-CSharp
         m_MethodName: BuyInvisiblePotion
         m_Mode: 1
@@ -2822,7 +2773,7 @@ GameObject:
   - component: {fileID: 1024484688}
   - component: {fileID: 1024484687}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Shop Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3053,7 +3004,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 178703685}
+      - m_Target: {fileID: 1356346953}
         m_TargetAssemblyTypeName: Buying, Assembly-CSharp
         m_MethodName: BuyGreenTimePotionCount
         m_Mode: 1
@@ -3246,6 +3197,7 @@ GameObject:
   - component: {fileID: 1356346950}
   - component: {fileID: 1356346952}
   - component: {fileID: 1356346951}
+  - component: {fileID: 1356346953}
   m_Layer: 5
   m_Name: RawImage
   m_TagString: Untagged
@@ -3310,6 +3262,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1356346949}
   m_CullTransparentMesh: 1
+--- !u!114 &1356346953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1356346949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc492d22545f98e4890fcb20910a56ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knightData: {fileID: 11400000, guid: 68a02cc4c5a46c9458c3d980c54bbd70, type: 2}
+  buyData: {fileID: 11400000, guid: bf9454abffeade94d8f421eb6c95e4e9, type: 2}
+  upgradeTXT: {fileID: 224591675}
+  healthTXT: {fileID: 125498182}
+  InvisTXT: {fileID: 2123852734}
+  greenTXT: {fileID: 59582857}
 --- !u!1 &1395984734
 GameObject:
   m_ObjectHideFlags: 0
@@ -3484,7 +3454,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1606627682
 GameObject:
@@ -3971,7 +3941,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 178703685}
+      - m_Target: {fileID: 1356346953}
         m_TargetAssemblyTypeName: Buying, Assembly-CSharp
         m_MethodName: UpgradeArmor
         m_Mode: 1

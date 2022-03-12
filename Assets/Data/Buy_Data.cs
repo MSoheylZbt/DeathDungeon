@@ -11,16 +11,10 @@ public class Buy_Data : ScriptableObject
 
     [SerializeField] int firstUpgradePrice;
     [SerializeField] int upgradeAddition;
-    [SerializeField] int upgradeCount = 0;
 
-    public int GetUpgradePrice()
+    public int GetUpgradePrice(int upgradeCount)
     {
         int finalPrice = firstUpgradePrice + (upgradeCount * upgradeAddition);
         return finalPrice;
-    }
-
-    public void IncrementUpgrade()
-    {
-        upgradeCount++;
     }
 }

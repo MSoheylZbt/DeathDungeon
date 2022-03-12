@@ -7,12 +7,12 @@ public class ReactManager : MonoBehaviour
     [HideInInspector] public FireReact fireReact;
     [HideInInspector] public ArrowReact arrowReact;
     [HideInInspector] public ArrowTrapManager arrowManager;
-    public void InitReacts()
+    public void InitReacts(ReflexUI refUI)
     {
         fireReact = GetComponent<FireReact>();
-        fireReact.Init();
+        fireReact.Init(refUI);
         arrowManager = GetComponent<ArrowTrapManager>();
         arrowReact = GetComponent<ArrowReact>();
-        arrowReact.Init(arrowManager);
+        arrowReact.Init(arrowManager,refUI);
     }
 }

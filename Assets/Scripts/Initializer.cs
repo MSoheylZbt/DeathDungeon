@@ -14,7 +14,8 @@ public class Initializer : MonoBehaviour
             GridHandler gridHandler = FindObjectOfType<GridHandler>();
             gridHandler.Init(levelManager);
             ReactManager reactManager = FindObjectOfType<ReactManager>();
-            reactManager.InitReacts();
+            ReflexUI reflexUI = FindObjectOfType<ReflexUI>();
+            reactManager.InitReacts(reflexUI);
 
             Knight.instance.Init(gridHandler,reactManager);
 

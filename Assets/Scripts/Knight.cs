@@ -147,15 +147,15 @@ public class Knight : MonoBehaviour
         }
         else if (gridHandler.isSteppedOnFireTrap(newPos))
         {
-            if (data.invisiblePotionCount > 0)
-                data.invisiblePotionCount--;
+            if (data.InvisPotionCount > 0)
+                data.InvisPotionCount--;
             else
                 fireReact.StartFireTimer(GetReductionTime());
 
         } else if(gridHandler.isSteppedOnArrowTrap(newPos))
         {
-            if(data.invisiblePotionCount > 0)
-                data.invisiblePotionCount--;
+            if(data.InvisPotionCount > 0)
+                data.InvisPotionCount--;
             else
             {
                 SetFreeze(true);
@@ -170,9 +170,9 @@ public class Knight : MonoBehaviour
 
     private float GetReductionTime()
     {
-        if (data.greenTimePotionCount > 0)
+        if (data.GreePotionCount > 0)
         {
-            data.greenTimePotionCount--;
+            data.GreePotionCount--;
             return data.greenTimeReduction;
         }
         else
@@ -191,10 +191,10 @@ public class Knight : MonoBehaviour
     {
         print("<color=red> Damage taken! </color>");
 
-        if(data.healthPotionCount > 0)
+        if(data.HealthPotionCount > 0)
         {
-            data.healthPotionCount--;
-            //TODO :: Animation :: Removie a heart then use a potion.
+            data.HealthPotionCount--;
+            //TODO :: Animation :: Remove a heart then use a potion.
             return;
         }
         else
