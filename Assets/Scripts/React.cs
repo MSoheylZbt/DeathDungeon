@@ -95,7 +95,7 @@ public class React : MonoBehaviour
                 break;
 
             case TimerState.Red:
-                print("Enter Red");
+                //print("Enter Red");
                 player.SetFreeze(false);
                 ResetTimer();
                 break;
@@ -104,13 +104,13 @@ public class React : MonoBehaviour
                 ResetTimer();
                 player.SetFreeze(false);
                 player.AddCoins(greenCoins);
-                print("<color=green> Green Pressed! </color>");
+                //print("<color=green> Green Pressed! </color>");
                 break;
 
             case TimerState.Yellow:
                 ResetTimer();
                 player.SetFreeze(false);
-                print("<color=yellow> Yellow Pressed! </color>");
+                //print("<color=yellow> Yellow Pressed! </color>");
                 break;
         }
     }

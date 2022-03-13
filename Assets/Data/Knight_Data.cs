@@ -5,24 +5,51 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Player")]
 public class Knight_Data : ScriptableObject
 {
-    [Header("Playtime parameters")]
-    public int currentCoins;
-    public int currentHealth;
-
-
-    [Header("Player Parameters")]
-    public int maxHealth = 4;
-    public Vector2 moveAmount;
-    public Vector3 playerFirstPos;
+    public int maxHealth;
     public float greenTimeReduction;
+    [HideInInspector] public Vector2 moveAmount;
+    [HideInInspector] public Vector3 playerFirstPos;
 
+    #region Player Parameters
+    public delegate void ChangePlayerParams();
+
+    int currentCoins;
+    public static event ChangePlayerParams OnCoinUsed;
+    public int Coins
+    {
+        get
+        {
+            return currentCoins;
+        }
+        set
+        {
+            currentCoins = value;
+            OnCoinUsed?.Invoke();
+        }
+    }
+
+    int currentHealth;
+    public static event ChangePlayerParams OnHeartUsed;
+    public int Health
+    {
+        get
+        {
+            return currentHealth;
+        }
+        set
+        {
+            currentHealth = value;
+            OnHeartUsed?.Invoke();
+        }
+    }
+
+#endregion
+
+    #region Inventory
     public delegate void Buying();
-    public static event Buying OnSetInvisPotion;
-    public static event Buying OnSetHealthPotion;
-    public static event Buying OnSetUpgrade;
-    public static event Buying OnSetGreenPotion;
 
-    [SerializeField] int invisiblePotionCount;
+    int invisiblePotionCount;
+    public static event Buying OnSetInvisPotion;
     public int InvisPotionCount
     {
         get
@@ -32,11 +59,13 @@ public class Knight_Data : ScriptableObject
         set
         {
             invisiblePotionCount = value;
-            OnSetInvisPotion();
+            OnSetInvisPotion?.Invoke();
         }
     }
 
-    [SerializeField] int healthPotionCount;
+    int healthPotionCount;
+    public static event Buying OnSetHealthPotion;
+
     public int HealthPotionCount
     {
         get
@@ -46,11 +75,13 @@ public class Knight_Data : ScriptableObject
         set
         {
             healthPotionCount = value;
-            OnSetHealthPotion();
+            OnSetHealthPotion?.Invoke();
         }
     }
 
-    [SerializeField] int greenTimePotionCount;
+    int greenTimePotionCount;
+    public static event Buying OnSetGreenPotion;
+
     public int GreePotionCount
     {
         get
@@ -60,11 +91,13 @@ public class Knight_Data : ScriptableObject
         set
         {
             greenTimePotionCount = value;
-            OnSetGreenPotion();
+            OnSetGreenPotion?.Invoke();
         }
     }
 
-    [SerializeField] int upgradeCount;
+    int upgradeCount;
+    public static event Buying OnSetUpgrade;
+
     public int UpgradeLevel
     {
         get
@@ -74,17 +107,20 @@ public class Knight_Data : ScriptableObject
         set
         {
             upgradeCount = value;
-            OnSetUpgrade();
+            OnSetUpgrade?.Invoke();
         }
     }
+    #endregion
 
     public void ResetData()
     {
-        currentHealth = maxHealth;
-        currentCoins = 0;
-        invisiblePotionCount = 0;
-        healthPotionCount = 0;
-        greenTimePotionCount = 0;
+        maxHealth = 2;
+        Health = maxHealth;
+        Coins = 0;
+        InvisPotionCount = 0;
+        HealthPotionCount = 0;
+        GreePotionCount = 0;
+        UpgradeLevel = 0;
     }
 
 }

@@ -30,10 +30,10 @@ public class Buying : MonoBehaviour
 
     public void UpgradeArmor()
     {
-        if (knightData.currentCoins < buyData.GetUpgradePrice(knightData.UpgradeLevel))
+        if (knightData.Coins < buyData.GetUpgradePrice(knightData.UpgradeLevel))
             return;
 
-        knightData.currentCoins -= buyData.GetUpgradePrice(knightData.UpgradeLevel);
+        knightData.Coins -= buyData.GetUpgradePrice(knightData.UpgradeLevel);
         knightData.maxHealth++;
 
         knightData.UpgradeLevel++;
@@ -43,30 +43,30 @@ public class Buying : MonoBehaviour
 
     public void BuyHealthPotion()
     {
-        if(knightData.currentCoins < buyData.healthPotionPrice)
+        if(knightData.Coins < buyData.healthPotionPrice)
             return;
 
-        knightData.currentCoins -= buyData.healthPotionPrice;
-        if (knightData.currentHealth == knightData.maxHealth)
+        knightData.Coins -= buyData.healthPotionPrice;
+        if (knightData.Health == knightData.maxHealth)
             knightData.HealthPotionCount++;
         else
-            knightData.currentHealth++;
+            knightData.Health++;
     }
 
     public void BuyInvisiblePotion()
     {
-        if (knightData.currentCoins < buyData.invisiblePotionPrice)
+        if (knightData.Coins < buyData.invisiblePotionPrice)
             return;
-        knightData.currentCoins -= buyData.invisiblePotionPrice;
+        knightData.Coins -= buyData.invisiblePotionPrice;
         knightData.InvisPotionCount++;
 
     }
 
     public void BuyGreenTimePotionCount()
     {
-        if (knightData.currentCoins < buyData.greenTimePotionPrice)
+        if (knightData.Coins < buyData.greenTimePotionPrice)
             return;
-        knightData.currentCoins -= buyData.greenTimePotionPrice;
+        knightData.Coins -= buyData.greenTimePotionPrice;
         knightData.GreePotionCount++;
     }
 }

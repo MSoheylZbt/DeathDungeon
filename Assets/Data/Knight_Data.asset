@@ -12,13 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73154d84d49479540a2bdce1a0f4c213, type: 3}
   m_Name: Knight_Data
   m_EditorClassIdentifier: 
-  currentCoins: 0
-  currentHealth: 3
-  maxHealth: 3
+  maxHealth: 2
+  greenTimeReduction: 0.2
   moveAmount: {x: 1, y: 1}
   playerFirstPos: {x: 1.55, y: -4.45, z: -1}
-  greenTimeReduction: 0.2
-  invisiblePotionCount: 0
-  healthPotionCount: 0
-  greenTimePotionCount: 0
-  upgradeCount: 0

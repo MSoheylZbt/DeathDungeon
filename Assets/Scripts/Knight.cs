@@ -36,6 +36,11 @@ public class Knight : MonoBehaviour
         }
     }
 
+    private void Start() //Can't call in Awake because Knight_Data has OnEnable and OnEnable calls after Awake
+    {
+        data.ResetData();
+    }
+
     public void Init(GridHandler handler, ReactManager reactManager)
     {
         data.playerFirstPos = transform.position;
@@ -189,7 +194,7 @@ public class Knight : MonoBehaviour
 
     public void TakeDamage()
     {
-        print("<color=red> Damage taken! </color>");
+        //print("<color=red> Damage taken! </color>");
 
         if(data.HealthPotionCount > 0)
         {
@@ -199,8 +204,8 @@ public class Knight : MonoBehaviour
         }
         else
         {
-            data.currentHealth--;
-            if (data.currentHealth == 0)
+            data.Health--;
+            if (data.Health == 0)
             {
                 Die();
             }
@@ -209,12 +214,11 @@ public class Knight : MonoBehaviour
 
     public void AddCoins(int coinsAmount)
     {
-        data.currentCoins += coinsAmount;
+        data.Coins += coinsAmount;
     }
 
     public void Die()
     {
-        print("Die Motherfucker");
         gameObject.SetActive(false);
     }
 
