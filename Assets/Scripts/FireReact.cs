@@ -11,29 +11,28 @@ public class FireReact : React
     [SerializeField] float greenStart;
     [SerializeField] float totalLength;
 
-    Vector3 playerFirstPos = new Vector3();
+    Vector3 playerCurrentTilePos = new Vector3();
 
-    private void Update()
+    private void OnEnable()
     {
-        if (GetCurrentState() == TimerState.Green || GetCurrentState() == TimerState.Yellow)
-        {
-            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                ShowReaction();
-            }
-        }
-
+        Knight.OnMove += ShowReaction;
     }
+
 
     protected override void ShowReaction()
     {
-        base.ShowReaction();
-        SetTileFireImage();
+        if(GetCurrentState() != TimerState.NotStarted)
+        {
+            //Debug.Log("Call from " + "<color=black> FireReact: </color>" + "<color=Green> Show Reaction! </color>");
+            base.ShowReaction();
+            SetTileFireImage();
+        }
     }
 
     public void StartFireTimer(float greenTimeReduction)
     {
-        playerFirstPos = player.transform.position;
+        playerCurrentTilePos = player.transform.position;
+        //Debug.Log("Call from " + "<color=black> FireReact: </color>" + "<color=green> Current position: </color> " + playerCurrentTilePos);
         float tempGreenStart = greenStart - greenTimeReduction;
         base.StartTimer(tempGreenStart,yellowStart,totalLength);
     }
@@ -46,8 +45,15 @@ public class FireReact : React
 
     private void SetTileFireImage()
     {
+        //Debug.Log("Call from " + "<color=black> FireReact: </color>" + "<color=red> Tile Set! </color>");
         Tilemap tilemap = player.GetTileMap();
-        tilemap.SetTile(tilemap.WorldToCell(playerFirstPos), fireTile);
+        tilemap.SetTile(tilemap.WorldToCell(playerCurrentTilePos), fireTile);
+    }
+
+    public void SetTileFireImage(Vector3 playerPos)
+    {
+        Tilemap tilemap = player.GetTileMap();
+        tilemap.SetTile(tilemap.WorldToCell(playerPos), fireTile);
     }
 
     protected override void TimerEnd()
@@ -66,5 +72,10 @@ public class FireReact : React
     {
         player.SetFreeze(false);
         //base.YellowState();
+    }
+
+    private void OnDisable()
+    {
+        Knight.OnMove -= ShowReaction;
     }
 }

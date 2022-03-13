@@ -70,4 +70,9 @@ public class LevelManager : MonoBehaviour
         Knight.instance.transform.position = Knight.instance.GetPlayerFirstPos();
         SceneManager.LoadScene(0);
     }
+
+    public void ResetLevelIndex()
+    {
+        levelIndex = 0;
+    }
 }

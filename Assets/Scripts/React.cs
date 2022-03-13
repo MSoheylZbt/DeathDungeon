@@ -59,14 +59,12 @@ public class React : MonoBehaviour
 
         SetCurrentState(TimerState.Red, Color.red);
         RedState();
-        //if(OnStateRed != null)
-        //    OnStateRed();
 
         //print(tempTotalLength);
 
+        //Debug.Log("Call from " + "<color=black> React: </color>" + "<color=yellow> Timer Started </color>");
         while (elapsedTime < tempTotalLength)
         {
-            //print("Timer Started " + elapsedTime);
             elapsedTime += Time.deltaTime;
             reflexUI.SetSliderFiller(elapsedTime);
 

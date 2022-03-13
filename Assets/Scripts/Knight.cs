@@ -9,6 +9,9 @@ public class Knight : MonoBehaviour
     [SerializeField] Knight_Data data;
     public static Knight instance;
 
+    public delegate void Moving();
+    public static event Moving OnMove;
+
     #region Cache
     Vector2 moveAmount = new Vector2();
     Tilemap tilemap;
@@ -16,6 +19,9 @@ public class Knight : MonoBehaviour
     GridHandler gridHandler;
     ArrowReact arrowReact;
     FireReact fireReact;
+    ResetGame gameReseter;
+
+    Vector3 playerFirePos;
     #endregion
 
     bool isFreezed = false;
@@ -38,10 +44,11 @@ public class Knight : MonoBehaviour
 
     private void Start() //Can't call in Awake because Knight_Data has OnEnable and OnEnable calls after Awake
     {
+        print("Knight Called");
         data.ResetData();
     }
 
-    public void Init(GridHandler handler, ReactManager reactManager)
+    public void Init(GridHandler handler, ReactManager reactManager,ResetGame reset)
     {
         data.playerFirstPos = transform.position;
 
@@ -53,6 +60,8 @@ public class Knight : MonoBehaviour
 
         arrowReact = reactManager.arrowReact;
         fireReact = reactManager.fireReact;
+
+        gameReseter = reset;
     }
 
     public void Init()
@@ -130,6 +139,7 @@ public class Knight : MonoBehaviour
         if (isBlock(newPos,rayDir,cellXY) == false)
         {
             transform.position = newPos;
+            OnMove?.Invoke();
             if (gridHandler)
             {
                 //print("Grid Handling");
@@ -153,9 +163,16 @@ public class Knight : MonoBehaviour
         else if (gridHandler.isSteppedOnFireTrap(newPos))
         {
             if (data.InvisPotionCount > 0)
+            {
+                OnMove += SetFireTile;
+                playerFirePos = transform.position;
                 data.InvisPotionCount--;
+            }
             else
+            {
+                //Debug.Log("Call from " + "<color=black> Knight: </color>" + "<color=orange> Fire Activated </color>");
                 fireReact.StartFireTimer(GetReductionTime());
+            }
 
         } else if(gridHandler.isSteppedOnArrowTrap(newPos))
         {
@@ -173,6 +190,12 @@ public class Knight : MonoBehaviour
         }
     }
 
+    private void SetFireTile() // Just For UnSubscribing Event
+    {
+        fireReact.SetTileFireImage(playerFirePos);
+        OnMove -= SetFireTile;
+    }
+
     private float GetReductionTime()
     {
         if (data.GreePotionCount > 0)
@@ -187,7 +210,7 @@ public class Knight : MonoBehaviour
     private bool isBlock(Vector3 newPos,Vector3 dir,float rayDistance)
     {
         RaycastHit2D hitted = Physics2D.Raycast(transform.position, dir,rayDistance);
-        Debug.DrawRay(transform.position, dir, Color.red, 1f);
+        //Debug.DrawRay(transform.position, dir, Color.red, 1f);
 
         return hitted;
     }
@@ -220,6 +243,7 @@ public class Knight : MonoBehaviour
     public void Die()
     {
         gameObject.SetActive(false);
+        gameReseter.gameObject.SetActive(true);
     }
 
 
