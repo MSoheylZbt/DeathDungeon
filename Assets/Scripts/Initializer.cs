@@ -7,7 +7,7 @@ public class Initializer : MonoBehaviour
 {
     private void Start()
     {
-        print("Called");
+        //print("Called");
         if(SceneManager.GetActiveScene().buildIndex == 0)
         {
             LevelManager levelManager = FindObjectOfType<LevelManager>();
@@ -21,7 +21,6 @@ public class Initializer : MonoBehaviour
             ResetGame reseter = FindObjectOfType<ResetGame>();
             reseter.Init(levelManager);
             Knight.instance.Init(gridHandler,reactManager,reseter);
-            reseter.gameObject.SetActive(false);
 
         }
         else if(SceneManager.GetActiveScene().buildIndex == 1)

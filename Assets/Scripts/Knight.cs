@@ -6,8 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class Knight : MonoBehaviour
 {
-    [SerializeField] Knight_Data data;
     public static Knight instance;
+
+    [SerializeField] Knight_Data data;
+    [SerializeField] Coin coinPref;
 
     public delegate void Moving();
     public static event Moving OnMove;
@@ -20,7 +22,7 @@ public class Knight : MonoBehaviour
     ArrowReact arrowReact;
     FireReact fireReact;
     ResetGame gameReseter;
-
+    Coin coin;
     Vector3 playerFirePos;
     #endregion
 
@@ -44,7 +46,7 @@ public class Knight : MonoBehaviour
 
     private void Start() //Can't call in Awake because Knight_Data has OnEnable and OnEnable calls after Awake
     {
-        print("Knight Called");
+        //print("Knight Called");
         data.ResetData();
     }
 
@@ -139,6 +141,7 @@ public class Knight : MonoBehaviour
         if (isBlock(newPos,rayDir,cellXY) == false)
         {
             transform.position = newPos;
+            coin?.Disable();
             OnMove?.Invoke();
             if (gridHandler)
             {
@@ -190,6 +193,20 @@ public class Knight : MonoBehaviour
         }
     }
 
+    private void PlayCoinAnimation()
+    {
+        if (!coin)
+        {
+            coin = Instantiate(coinPref, transform.position, Quaternion.identity, this.transform);
+        }
+        else
+        {
+            coin.transform.position = transform.position;
+            coin.Enable();
+        }
+        coin.PlayAnimation();
+    }
+
     private void SetFireTile() // Just For UnSubscribing Event
     {
         fireReact.SetTileFireImage(playerFirePos);
@@ -218,7 +235,7 @@ public class Knight : MonoBehaviour
     public void TakeDamage()
     {
         //print("<color=red> Damage taken! </color>");
-
+        animator.SetTrigger("GetHit");
         if(data.HealthPotionCount > 0)
         {
             data.HealthPotionCount--;
@@ -238,12 +255,13 @@ public class Knight : MonoBehaviour
     public void AddCoins(int coinsAmount)
     {
         data.Coins += coinsAmount;
+        PlayCoinAnimation();
     }
 
     public void Die()
     {
+        gameReseter.ShowMenu();
         gameObject.SetActive(false);
-        gameReseter.gameObject.SetActive(true);
     }
 
 

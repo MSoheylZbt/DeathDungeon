@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1833621339542340203
+--- !u!1 &3414092732314827452
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,38 +8,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1833621339542340201}
-  - component: {fileID: 1833621339542340202}
-  - component: {fileID: 1833621339542340200}
-  - component: {fileID: 1833621339542340215}
+  - component: {fileID: 3414092732314827455}
+  - component: {fileID: 3414092732314827454}
+  - component: {fileID: 1988250415136041615}
+  - component: {fileID: 3414092732314827449}
   m_Layer: 0
-  m_Name: knight
+  m_Name: Coin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1833621339542340201
+  m_IsActive: 1
+--- !u!4 &3414092732314827455
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1833621339542340203}
+  m_GameObject: {fileID: 3414092732314827452}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.55, y: -5.45, z: -1}
-  m_LocalScale: {x: 0.75, y: 0.75, z: 0}
+  m_LocalPosition: {x: 0.46, y: -0.48, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &1833621339542340202
+--- !u!212 &3414092732314827454
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1833621339542340203}
+  m_GameObject: {fileID: 3414092732314827452}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -72,8 +72,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: ea320cc416cf6334c9ea2d3a4a0c88ad, type: 3}
+  m_SortingOrder: 5
+  m_Sprite: {fileID: 21300000, guid: 609824879d9da50429c5835eefa66360, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -84,31 +84,29 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1833621339542340200
+--- !u!114 &1988250415136041615
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1833621339542340203}
+  m_GameObject: {fileID: 3414092732314827452}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d926e6376559cd43912b5e9ca62c3dd, type: 3}
+  m_Script: {fileID: 11500000, guid: c65e5b1d4e392604ca987f0199845f27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 68a02cc4c5a46c9458c3d980c54bbd70, type: 2}
-  coinPref: {fileID: 1988250415136041615, guid: 69b097c11ddbf72478058e45df129fc8, type: 3}
---- !u!95 &1833621339542340215
+--- !u!95 &3414092732314827449
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1833621339542340203}
+  m_GameObject: {fileID: 3414092732314827452}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 3fa12a41e12461a489cbaeaaceecd45e, type: 2}
+  m_Controller: {fileID: 9100000, guid: 5a36d2d59b922794481f17b1bf672d88, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

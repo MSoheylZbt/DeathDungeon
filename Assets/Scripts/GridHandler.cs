@@ -15,6 +15,7 @@ public class GridHandler : MonoBehaviour
     Tilemap tilemap;
     int gridSize;
     int tileMapLength;
+    GameObject coin;
     #endregion
 
     #region TilesContents

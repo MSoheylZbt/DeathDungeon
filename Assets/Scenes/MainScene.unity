@@ -846,8 +846,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   greenCoins: 3
   yellowStart: 0.5
-  greenStart: 0.9
-  totalLength: 1.2
+  greenStart: 0.85
+  totalLength: 1
 --- !u!114 &382720307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -863,8 +863,8 @@ MonoBehaviour:
   greenCoins: 5
   fireTile: {fileID: 11400000, guid: dd4e3a48d509eac408c118d4660d7e0b, type: 2}
   yellowStart: 0.2
-  greenStart: 0.8
-  totalLength: 1
+  greenStart: 0.5
+  totalLength: 0.8
 --- !u!114 &382720308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1609,6 +1609,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1159238396091742583, guid: 07e28303587d5094b819b43626309b3b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1263
+      objectReference: {fileID: 0}
     - target: {fileID: 5906469941032800969, guid: 07e28303587d5094b819b43626309b3b, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1703,6 +1707,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5906469942771495021, guid: 07e28303587d5094b819b43626309b3b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5906469942771495022, guid: 07e28303587d5094b819b43626309b3b, type: 3}
+      propertyPath: m_RenderMode
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6241106684515252884, guid: 07e28303587d5094b819b43626309b3b, type: 3}
