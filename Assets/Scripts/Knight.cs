@@ -161,7 +161,7 @@ public class Knight : MonoBehaviour
         if (gridHandler.isSteppedOnTreasure(newPos,out coinsAmount))
         {
             AddCoins(coinsAmount);
-            //Debug.Log("<color=red> Trapped! </color> ");
+
         }
         else if (gridHandler.isSteppedOnFireTrap(newPos))
         {
@@ -254,6 +254,7 @@ public class Knight : MonoBehaviour
 
     public void AddCoins(int coinsAmount)
     {
+        Debug.Log(coinsAmount + " <color=yellow> Coins Adeed! </color> ");
         data.Coins += coinsAmount;
         PlayCoinAnimation();
     }
@@ -288,5 +289,17 @@ public class Knight : MonoBehaviour
     public Vector3 GetPlayerFirstPos()
     {
         return data.playerFirstPos;
+    }
+
+    public void PlayGreenAnimation()
+    {
+        print("<color=green> Green Animation played! </color>");
+        animator.SetTrigger("GreenShield");
+    }
+
+    public void PlayYellowAnimation()
+    {
+        print("<color=yellow> Yellow Animation played! </color>");
+        animator.SetTrigger("YellowShield");
     }
 }
