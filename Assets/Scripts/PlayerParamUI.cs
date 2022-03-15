@@ -7,6 +7,7 @@ public class PlayerParamUI : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI coinTxt;
     [SerializeField] TextMeshProUGUI heartTxt;
+    [SerializeField] TextMeshProUGUI scoreTxt;
 
     [SerializeField] Knight_Data data;
 
@@ -14,6 +15,7 @@ public class PlayerParamUI : MonoBehaviour
     {
         Knight_Data.OnCoinUsed += ChangeCoinText;
         Knight_Data.OnHeartUsed += ChangeHeartText;
+        Knight_Data.OnGetScore += ChangeScoreText;
     }
 
     void ChangeHeartText()
@@ -26,9 +28,15 @@ public class PlayerParamUI : MonoBehaviour
         coinTxt.text = data.Coins.ToString();
     }
 
+    void ChangeScoreText()
+    {
+        scoreTxt.text = data.Score.ToString();
+    }
+
     private void OnDisable()
     {
         Knight_Data.OnCoinUsed -= ChangeCoinText;
         Knight_Data.OnHeartUsed -= ChangeHeartText;
+        Knight_Data.OnGetScore -= ChangeScoreText;
     }
 }

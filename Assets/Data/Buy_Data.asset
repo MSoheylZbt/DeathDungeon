@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 233a6757c9d281940ab441fa29f90be9, type: 3}
   m_Name: Buy_Data
   m_EditorClassIdentifier: 
-  healthPotionPrice: 50
-  invisiblePotionPrice: 15
-  greenTimePotionPrice: 25
-  firstUpgradePrice: 100
-  upgradeAddition: 50
+  healthPotionPrice: 65
+  invisiblePotionPrice: 10
+  greenTimePotionPrice: 5
+  firstUpgradePrice: 150
+  upgradeAddition: 75

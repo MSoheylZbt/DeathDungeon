@@ -7,6 +7,7 @@ public class Knight_Data : ScriptableObject
 {
     public int maxHealth;
     public float greenTimeReduction;
+    [SerializeField] int maxStrike;
     [HideInInspector] public Vector2 moveAmount;
     [HideInInspector] public Vector3 playerFirstPos;
 
@@ -43,10 +44,43 @@ public class Knight_Data : ScriptableObject
         }
     }
 
+
+    int currentStrike = 1;
+    public int Strike
+    {
+        get
+        {
+            return currentStrike;
+        }
+        set
+        {
+            if(value <= maxStrike)
+                currentStrike = value;
+        }
+    }
+
+    int currentScore;
+    public static event ChangePlayerParams OnGetScore;
+
+    public int Score
+    {
+        get
+        {
+            return currentScore;
+        }
+        set
+        {
+            currentScore +=  (value * currentStrike);
+            OnGetScore?.Invoke();
+        }
+    }
+
+
+
 #endregion
 
     #region Inventory
-    public delegate void Buying();
+    public delegate void Buying(bool isUsed);
 
     int invisiblePotionCount;
     public static event Buying OnSetInvisPotion;
@@ -58,8 +92,13 @@ public class Knight_Data : ScriptableObject
         }
         set
         {
+            int tempCount = invisiblePotionCount;
             invisiblePotionCount = value;
-            OnSetInvisPotion?.Invoke();
+            if (invisiblePotionCount < tempCount && invisiblePotionCount != 0)
+                OnSetInvisPotion?.Invoke(true);
+            else
+                OnSetInvisPotion?.Invoke(false);
+
         }
     }
 
@@ -74,8 +113,12 @@ public class Knight_Data : ScriptableObject
         }
         set
         {
+            int tempCount = healthPotionCount;
             healthPotionCount = value;
-            OnSetHealthPotion?.Invoke();
+            if (healthPotionCount < tempCount && healthPotionCount != 0)
+                OnSetHealthPotion?.Invoke(true);
+            else
+                OnSetHealthPotion?.Invoke(false);
         }
     }
 
@@ -90,8 +133,12 @@ public class Knight_Data : ScriptableObject
         }
         set
         {
+            int tempCount = greenTimePotionCount;
             greenTimePotionCount = value;
-            OnSetGreenPotion?.Invoke();
+            if (greenTimePotionCount < tempCount && greenTimePotionCount != 0)
+                OnSetGreenPotion?.Invoke(true);
+            else
+                OnSetGreenPotion?.Invoke(false);
         }
     }
 
@@ -106,21 +153,29 @@ public class Knight_Data : ScriptableObject
         }
         set
         {
+            int tempCount = upgradeCount;
             upgradeCount = value;
-            OnSetUpgrade?.Invoke();
+            if (upgradeCount < tempCount)
+                OnSetUpgrade?.Invoke(true);
+            else
+                OnSetUpgrade?.Invoke(false);
         }
     }
     #endregion
 
     public void ResetData()
     {
-        maxHealth = 2;
+        maxHealth = 1;
         Health = maxHealth;
         Coins = 0;
         InvisPotionCount = 0;
         HealthPotionCount = 0;
         GreePotionCount = 0;
         UpgradeLevel = 0;
+        Strike = 1;
+
+        currentScore = 0;
+        Score = 0;
     }
 
 }

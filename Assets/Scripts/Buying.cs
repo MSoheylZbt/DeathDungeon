@@ -35,10 +35,8 @@ public class Buying : MonoBehaviour
 
         knightData.Coins -= buyData.GetUpgradePrice(knightData.UpgradeLevel);
         knightData.maxHealth++;
-
         knightData.UpgradeLevel++;
-
-        upgradeTXT.text = buyData.GetUpgradePrice(knightData.UpgradeLevel).ToString();
+        upgradeTXT.text = buyData.GetUpgradePrice(knightData.UpgradeLevel).ToString(); // Update with new price
     }
 
     public void BuyHealthPotion()

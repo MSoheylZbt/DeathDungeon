@@ -29,7 +29,7 @@ public class ReflexUI : MonoBehaviour
 
     public void SetSliderText(string txt)
     {
-        textMesh.text = txt;
+        textMesh.text = "x" + txt;
     }
 
 

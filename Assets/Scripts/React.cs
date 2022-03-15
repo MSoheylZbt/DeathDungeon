@@ -15,6 +15,8 @@ public class React : MonoBehaviour
 {
     [Header("From React")]
     [SerializeField] int greenCoins;
+    [SerializeField] int greenScore;
+    [SerializeField] int yellowScore;
     ReflexUI reflexUI;
 
     TimerState currentState = TimerState.NotStarted;
@@ -95,6 +97,7 @@ public class React : MonoBehaviour
             case TimerState.Red:
                 player.TakeDamage();
                 player.SetFreeze(false);
+                player.ResetStrike();
                 ResetTimer();
                 break;
 
@@ -103,14 +106,18 @@ public class React : MonoBehaviour
                 player.SetFreeze(false);
                 player.PlayGreenAnimation();
                 player.AddCoins(greenCoins);
-                print("<color=green> Green Pressed! </color>");
+                player.SetScore(greenScore);
+                player.IncrementStrike(reflexUI);
+                //print("<color=green> Green Pressed! </color>");
                 break;
 
             case TimerState.Yellow:
                 ResetTimer();
                 player.SetFreeze(false);
                 player.PlayYellowAnimation();
-                print("<color=yellow> Yellow Pressed! </color>");
+                player.ResetStrike();
+                player.SetScore(yellowScore);
+                //print("<color=yellow> Yellow Pressed! </color>");
                 break;
         }
     }
@@ -143,15 +150,6 @@ public class React : MonoBehaviour
         currentState = statetoSet;
         //print(currentState);
         reflexUI.SetSliderColor(stateColor);
-        SetStateText();
-    }
-
-    public void SetStateText()
-    {
-        if (currentState == TimerState.Red)
-            reflexUI.SetSliderText("Wait");
-        else
-            reflexUI.SetSliderText("Hit");
     }
 
     protected void SetCurrentState(TimerState statetoSet)

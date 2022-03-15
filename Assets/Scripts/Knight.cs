@@ -9,6 +9,7 @@ public class Knight : MonoBehaviour
     public static Knight instance;
 
     [SerializeField] Knight_Data data;
+    [SerializeField] Sounds_data sounds;
     [SerializeField] Coin coinPref;
 
     public delegate void Moving();
@@ -23,6 +24,7 @@ public class Knight : MonoBehaviour
     FireReact fireReact;
     ResetGame gameReseter;
     Coin coin;
+    AudioSource audioSource;
     Vector3 playerFirePos;
     #endregion
 
@@ -64,6 +66,8 @@ public class Knight : MonoBehaviour
         fireReact = reactManager.fireReact;
 
         gameReseter = reset;
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void Init()
@@ -140,6 +144,7 @@ public class Knight : MonoBehaviour
 
         if (isBlock(newPos,rayDir,cellXY) == false)
         {
+            audioSource.PlayOneShot(sounds.walkSound,sounds.walkAmount);
             transform.position = newPos;
             coin?.Disable();
             OnMove?.Invoke();
@@ -165,6 +170,7 @@ public class Knight : MonoBehaviour
         }
         else if (gridHandler.isSteppedOnFireTrap(newPos))
         {
+            audioSource.PlayOneShot(sounds.fireSound, sounds.fireAmount);
             if (data.InvisPotionCount > 0)
             {
                 OnMove += SetFireTile;
@@ -179,6 +185,7 @@ public class Knight : MonoBehaviour
 
         } else if(gridHandler.isSteppedOnArrowTrap(newPos))
         {
+            audioSource.PlayOneShot(sounds.arrowSound,sounds.arrowAmount);
             if(data.InvisPotionCount > 0)
                 data.InvisPotionCount--;
             else
@@ -236,10 +243,11 @@ public class Knight : MonoBehaviour
     {
         //print("<color=red> Damage taken! </color>");
         animator.SetTrigger("GetHit");
+        audioSource.PlayOneShot(sounds.damageSound,sounds.damageAmount);
         if(data.HealthPotionCount > 0)
         {
             data.HealthPotionCount--;
-            //TODO :: Animation :: Remove a heart then use a potion.
+            ResetStrike();
             return;
         }
         else
@@ -247,6 +255,7 @@ public class Knight : MonoBehaviour
             data.Health--;
             if (data.Health == 0)
             {
+                //print("<color=red> Dying! </color>");
                 Die();
             }
         }
@@ -254,9 +263,10 @@ public class Knight : MonoBehaviour
 
     public void AddCoins(int coinsAmount)
     {
-        Debug.Log(coinsAmount + " <color=yellow> Coins Adeed! </color> ");
+        //Debug.Log(coinsAmount + " <color=yellow> Coins Adeed! </color> ");
         data.Coins += coinsAmount;
         PlayCoinAnimation();
+        audioSource.PlayOneShot(sounds.coinSound,sounds.coinAmount);
     }
 
     public void Die()
@@ -293,13 +303,32 @@ public class Knight : MonoBehaviour
 
     public void PlayGreenAnimation()
     {
-        print("<color=green> Green Animation played! </color>");
+        //print("<color=green> Green Animation played! </color>");
+        audioSource.PlayOneShot(sounds.shieldSound,sounds.shieldAmount);
         animator.SetTrigger("GreenShield");
     }
 
     public void PlayYellowAnimation()
     {
-        print("<color=yellow> Yellow Animation played! </color>");
+        //print("<color=yellow> Yellow Animation played! </color>");
+        audioSource.PlayOneShot(sounds.shieldSound,sounds.shieldAmount);
         animator.SetTrigger("YellowShield");
+    }
+
+    public void SetScore(int score)
+    {
+        //print("Set Score " + score);
+        data.Score = score;
+    }
+
+    public void ResetStrike()
+    {
+        data.Strike = 1;
+    }
+
+    public void IncrementStrike(ReflexUI reflexUI)
+    {
+        data.Strike++;
+        reflexUI.SetSliderText(data.Strike.ToString());
     }
 }

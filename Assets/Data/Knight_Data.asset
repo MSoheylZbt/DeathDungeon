@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73154d84d49479540a2bdce1a0f4c213, type: 3}
   m_Name: Knight_Data
   m_EditorClassIdentifier: 
-  maxHealth: 2
+  maxHealth: 1
   greenTimeReduction: 0.2
+  maxStrike: 15
   moveAmount: {x: 1, y: 1}
   playerFirstPos: {x: 1.55, y: -4.45, z: -1}
