@@ -10,8 +10,10 @@ public class ReflexUI : MonoBehaviour
     TextMeshProUGUI textMesh;
     Image image;
 
+
     public void Init()
     {
+        //print("Reflex UI FUCKING Inited");
         slider = GetComponent<Slider>();
         textMesh = GetComponentInChildren<TextMeshProUGUI>();
         image = slider.fillRect.gameObject.GetComponent<Image>();

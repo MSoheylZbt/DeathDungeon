@@ -18,8 +18,8 @@ public class Buying : MonoBehaviour
 
     private void Awake()
     {
-
-        if(SceneManager.GetActiveScene().buildIndex == 1)
+        //print("Buying Awake");
+        if(SceneManager.GetActiveScene().buildIndex == 2)
         {
             upgradeTXT.text = buyData.GetUpgradePrice(knightData.UpgradeLevel).ToString();
             healthTXT.text = buyData.healthPotionPrice.ToString();

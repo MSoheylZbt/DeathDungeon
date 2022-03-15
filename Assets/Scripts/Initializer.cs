@@ -7,8 +7,8 @@ public class Initializer : MonoBehaviour
 {
     private void Start()
     {
-        //print("Called");
-        if(SceneManager.GetActiveScene().buildIndex == 0)
+        //print("Initializer Start Called");
+        if(SceneManager.GetActiveScene().buildIndex == 1)
         {
             LevelManager levelManager = FindObjectOfType<LevelManager>();
             levelManager.Init();
@@ -23,7 +23,7 @@ public class Initializer : MonoBehaviour
             Knight.instance.Init(gridHandler,reactManager,reseter);
 
         }
-        else if(SceneManager.GetActiveScene().buildIndex == 1)
+        else if(SceneManager.GetActiveScene().buildIndex == 2)
         {
             Knight.instance.Init();
         }

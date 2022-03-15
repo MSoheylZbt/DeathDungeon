@@ -32,13 +32,17 @@ public class Knight : MonoBehaviour
 
     private void Awake()
     {
+        //print("Kepp Knight Awake");
         KeepKnight();
     }
 
     private void KeepKnight()
     {
         if(instance != null)
+        {
+            //print("<color=yellow> Knight is detroying </color>");
             Destroy(gameObject);
+        }
         else
         {
             instance = this;
@@ -54,6 +58,7 @@ public class Knight : MonoBehaviour
 
     public void Init(GridHandler handler, ReactManager reactManager,ResetGame reset)
     {
+        //print("Knight Init");
         data.playerFirstPos = transform.position;
 
         gridHandler = handler;

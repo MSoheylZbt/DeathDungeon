@@ -26,6 +26,7 @@ public class ArrowReact : React
 
     public void Init(ArrowTrapManager arrowTrapManager,ReflexUI refUi)
     {
+        //print("ArrowReact RefUI name is: " + refUi.name);
         base.Init(refUi);
         arrowManager = arrowTrapManager;
     }

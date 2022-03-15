@@ -6,11 +6,7 @@ public class KeepBGMusic : MonoBehaviour
 {
     private void Awake()
     {
+        //print("KeepBG Awake");
         DontDestroyOnLoad(gameObject);
-    }
-
-    public void ExitGame()
-    {
-        Application.Quit();
     }
 }

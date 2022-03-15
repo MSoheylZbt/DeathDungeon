@@ -13,16 +13,16 @@ MonoBehaviour:
   m_Name: Sounds_data
   m_EditorClassIdentifier: 
   walkSound: {fileID: 8300000, guid: 735bd8423d88156458dfd9ad73f71c49, type: 3}
-  walkAmount: 0.3
+  walkAmount: 0.8
   coinSound: {fileID: 8300000, guid: 263cc2360c1d5f14a983f73f9f4e0e21, type: 3}
-  coinAmount: 0.3
+  coinAmount: 0.8
   damageSound: {fileID: 8300000, guid: 4de89a50ee1a0bf40b5d13298709c245, type: 3}
-  damageAmount: 0.3
+  damageAmount: 0.8
   arrowSound: {fileID: 8300000, guid: 6389476aae3d6394281680b17e2c0f6b, type: 3}
-  arrowAmount: 0.2
+  arrowAmount: 0.7
   fireSound: {fileID: 8300000, guid: 911cd19ba002d1644b56d860f7ecbade, type: 3}
-  fireAmount: 0.2
+  fireAmount: 0.7
   potionSound: {fileID: 8300000, guid: ef213ee6f2dc1794e910725d7c329bf4, type: 3}
-  potionAmount: 0.3
+  potionAmount: 0.8
   shieldSound: {fileID: 8300000, guid: ec4f5cdf32bf7314bab8976ec9f63153, type: 3}
-  shieldAmount: 0.2
+  shieldAmount: 0.7

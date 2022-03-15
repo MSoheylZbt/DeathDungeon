@@ -22,7 +22,7 @@ public class ResetGame : MonoBehaviour
         data.ResetData();
         levelManager.ResetLevelIndex();
         levelManager.LoadLevel();
-        rectTransform.anchoredPosition = new Vector2(-1263f, 0);
+        rectTransform.anchoredPosition = new Vector2(1718f, 0);
     }
 
     public void ShowMenu()

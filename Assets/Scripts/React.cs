@@ -17,7 +17,7 @@ public class React : MonoBehaviour
     [SerializeField] int greenCoins;
     [SerializeField] int greenScore;
     [SerializeField] int yellowScore;
-    ReflexUI reflexUI;
+    public ReflexUI reflexUI;
 
     TimerState currentState = TimerState.NotStarted;
 
@@ -38,6 +38,7 @@ public class React : MonoBehaviour
     {
         player = Knight.instance;
         reflexUI = refUI;
+        //print("React reflexUI is: " + reflexUI.name);
         reflexUI.Init();
     }
 
@@ -58,7 +59,6 @@ public class React : MonoBehaviour
     IEnumerator Timer() //Side-effect: Moving Arrow
     {
         isTimerStarted = true;
-
         SetCurrentState(TimerState.Red, Color.red);
         RedState();
 
@@ -148,7 +148,6 @@ public class React : MonoBehaviour
     private void SetCurrentState(TimerState statetoSet, Color stateColor)
     {
         currentState = statetoSet;
-        //print(currentState);
         reflexUI.SetSliderColor(stateColor);
     }
 
