@@ -55,10 +55,10 @@ public class LevelManager : MonoBehaviour
         {
             levelIndex = 0;
             Knight.instance.SetMoveAmount(new Vector2(tilemap.cellSize.x, tilemap.cellSize.y));
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(2);
         }
         else
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(1);
 
         animator.SetBool("OpenDoor", false);
         Knight.instance.gameObject.SetActive(true);
@@ -68,7 +68,7 @@ public class LevelManager : MonoBehaviour
     public void LoadLevelFromShop()
     {
         Knight.instance.transform.position = Knight.instance.GetPlayerFirstPos();
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 
     public void ResetLevelIndex()
