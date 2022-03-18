@@ -2,24 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+using TMPro; //TextMeshPro Library : used for high quality texts.
 
 public class ReflexUI : MonoBehaviour
 {
-    Slider slider;
+    Slider slider; // Slider is a circle in UI that indicates timer to the player.
     TextMeshProUGUI textMesh;
     Image image;
 
-
     public void Init()
     {
-        //print("Reflex UI FUCKING Inited");
         slider = GetComponent<Slider>();
         textMesh = GetComponentInChildren<TextMeshProUGUI>();
         image = slider.fillRect.gameObject.GetComponent<Image>();
     }
 
-    public void SetSliderMaxValue(float length)
+    public void SetSliderMaxValue(float length) // Total length of timer = Slider Max Value
     {
         slider.maxValue = length;
     }
@@ -29,7 +27,7 @@ public class ReflexUI : MonoBehaviour
         slider.value = amount;
     }
 
-    public void SetSliderText(string txt)
+    public void SetSliderText(string txt) // This text is used for showing strike counts.
     {
         textMesh.text = "x" + txt;
     }

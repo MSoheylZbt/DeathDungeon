@@ -7,7 +7,7 @@ using UnityEngine.Tilemaps;
 
 public class LevelManager : MonoBehaviour
 {
-    [SerializeField] int shopLevelIndex = 4;
+    [SerializeField] int shopLevelIndex = 4; // every 4 times that palyer beat main level, reaches a shop.
 
     #region Cache
     static int levelIndex = 0; // Is static for remaining during level transition.
@@ -21,10 +21,10 @@ public class LevelManager : MonoBehaviour
     {
         tilemap = GetComponentInChildren<Tilemap>();
         animator = GetComponent<Animator>();
-        SetAllTiles();
+        SetDoorGridPoses();
     }
 
-    private void SetAllTiles()
+    private void SetDoorGridPoses()
     {
         int size = tilemap.size.x * tilemap.size.y;
         for (int i = 0; i < size; i++)
@@ -47,14 +47,14 @@ public class LevelManager : MonoBehaviour
 
     public void LoadLevel()//Calling from animation event
     {
-        Knight.instance.transform.position = Knight.instance.GetPlayerFirstPos();
+        Knight.instance.transform.position = Knight.instance.GetPlayerFirstPos(); //reset player position
 
         levelIndex++;
         //print("level index: " + levelIndex);
-        if (levelIndex == shopLevelIndex)
+        if (levelIndex == shopLevelIndex) // if player reaches the shop
         {
             levelIndex = 0;
-            Knight.instance.SetMoveAmount(new Vector2(tilemap.cellSize.x, tilemap.cellSize.y));
+            Knight.instance.SetMoveAmount(new Vector2(tilemap.cellSize.x, tilemap.cellSize.y)); // because there is no gridHandler in shop level, we need to SetMoveAmount manually here.
             SceneManager.LoadScene(2);
         }
         else
@@ -65,7 +65,7 @@ public class LevelManager : MonoBehaviour
 
     }
 
-    public void LoadLevelFromShop()
+    public void LoadLevelFromShop() // Calls from clicking on button in shop scene
     {
         Knight.instance.transform.position = Knight.instance.GetPlayerFirstPos();
         SceneManager.LoadScene(1);

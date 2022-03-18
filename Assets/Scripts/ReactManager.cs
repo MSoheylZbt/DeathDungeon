@@ -9,8 +9,8 @@ public class ReactManager : MonoBehaviour
     [HideInInspector] public ArrowTrapManager arrowManager;
     public void InitReacts(ReflexUI refUI)
     {
-        //print("ReactManager RefUI name is: " + refUI.name);
-        fireReact = GetComponent<FireReact>();
+        //GetComponent will get attached given component on same gameObject
+        fireReact = GetComponent<FireReact>(); 
         fireReact.Init(refUI);
         arrowManager = GetComponent<ArrowTrapManager>();
         arrowReact = GetComponent<ArrowReact>();

@@ -12,7 +12,7 @@ public class Buy_Data : ScriptableObject
     [SerializeField] int firstUpgradePrice;
     [SerializeField] int upgradeAddition;
 
-    public int GetUpgradePrice(int upgradeCount)
+    public int GetUpgradePrice(int upgradeCount) // With every upgrading, upgrade price will be incremented.
     {
         int finalPrice = firstUpgradePrice + (upgradeCount * upgradeAddition);
         return finalPrice;

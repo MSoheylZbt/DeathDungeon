@@ -21,6 +21,8 @@ public class InventoryUI : MonoBehaviour
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
 
+        //Subscribe functions to their specific event
+        //after this when a value change their UI text also changed with them.
         Knight_Data.OnSetGreenPotion += SetGreenPotionTxt;
         Knight_Data.OnSetHealthPotion += SetRedPotionTxt;
         Knight_Data.OnSetInvisPotion += SetBluePotionTxt;
@@ -64,6 +66,7 @@ public class InventoryUI : MonoBehaviour
 
     private void OnDisable()
     {
+        //Unsubsribe functions
         Knight_Data.OnSetGreenPotion -= SetGreenPotionTxt;
         Knight_Data.OnSetHealthPotion -= SetRedPotionTxt;
         Knight_Data.OnSetInvisPotion -= SetBluePotionTxt;

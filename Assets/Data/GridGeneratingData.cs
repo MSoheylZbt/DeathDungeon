@@ -4,9 +4,11 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(menuName = "Grid Data")]
-public class SO_Grid : ScriptableObject
+public class GridGeneratingData : ScriptableObject
 {
     [Header("Difficulty realted")]
+    //Animation curve is a 2d graph that it's XY values can be changed in unity editor.
+
     // X (Time) : Chance of selection , Y (Value) : Difficulty
     [SerializeField] AnimationCurve difficultyChances;
 
@@ -19,16 +21,21 @@ public class SO_Grid : ScriptableObject
     int difficultyLevel = 0;
 
     [Header("Cache References")]
+    //Image references
     public TileBase treasureTile;
     public TileBase openedTreasureTile;
     public TileBase arrowTrapTile;
 
+    /// <summary>
+    /// Get a difficulty based on their defined chance in editor.
+    /// </summary>
     public void SetRandomDifficulty()
     {
         float ranomNumber = Random.Range(0.1f, 1f);
         difficultyLevel = (int) difficultyChances.Evaluate(ranomNumber); 
     }
 
+//Functions below get correct counts based on selected difficulty
     public int GetTreasureCount()
     {
         return (int) treasureCounts.Evaluate(difficultyLevel);

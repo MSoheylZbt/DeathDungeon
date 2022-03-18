@@ -16,18 +16,17 @@ public class ResetGame : MonoBehaviour
         rectTransform = GetComponent<RectTransform>();
     }
 
-
-    public void RestartGame()
+    public void RestartGame() // Called from UI Button
     {
         data.ResetData();
         levelManager.ResetLevelIndex();
         levelManager.LoadLevel();
-        rectTransform.anchoredPosition = new Vector2(1718f, 0);
+        rectTransform.anchoredPosition = new Vector2(1718f, 0); // Move menu out of Screen.
     }
 
     public void ShowMenu()
     {
-        rectTransform.anchoredPosition = new Vector2(0,0);
+        rectTransform.anchoredPosition = new Vector2(0,0); // move menu in middle of screen.
         ShowScore();
     }
 

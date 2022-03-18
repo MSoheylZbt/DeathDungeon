@@ -13,6 +13,7 @@ public class PlayerParamUI : MonoBehaviour
 
     private void OnEnable()
     {
+        //When theese three parameters changed in knight.data then their text will be changed too.
         Knight_Data.OnCoinUsed += ChangeCoinText;
         Knight_Data.OnHeartUsed += ChangeHeartText;
         Knight_Data.OnGetScore += ChangeScoreText;

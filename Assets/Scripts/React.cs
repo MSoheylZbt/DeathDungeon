@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TimerState
+public enum TimerState 
 {
     NotStarted,
     Red,
@@ -10,21 +10,21 @@ public enum TimerState
     Yellow
 }
 
-
+//React Class will be Used as a parent class.
 public class React : MonoBehaviour
 {
     [Header("From React")]
-    [SerializeField] int greenCoins;
-    [SerializeField] int greenScore;
+    [SerializeField] int greenCoins; // Amount of coins that player gets when he/she react in green time.
+    [SerializeField] int greenScore;// Amount of Score that player gets when he/she react in green time.
     [SerializeField] int yellowScore;
     public ReflexUI reflexUI;
 
     TimerState currentState = TimerState.NotStarted;
 
     #region Cache
-    protected float elapsedTime = 0f;
+    protected float elapsedTime = 0f; // elapsed time from when a timer start.
     protected Knight player;
-    bool isTimerStarted = false;
+    bool isTimerStarted = false; // for not starting multiple coroutines at same time.
     Coroutine timerCoroutine;
 
     float tempGreenStart = 0f;
@@ -34,14 +34,19 @@ public class React : MonoBehaviour
     #endregion
 
 
-    public void Init(ReflexUI refUI)
+    public void Init(ReflexUI refUI) //Initialize all needed references
     {
         player = Knight.instance;
         reflexUI = refUI;
-        //print("React reflexUI is: " + reflexUI.name);
         reflexUI.Init();
     }
 
+    /// <summary>
+    /// Start a timer with values from input.
+    /// </summary>
+    /// <param name="greenStartToSet"></param>
+    /// <param name="yellowStartToSet"></param>
+    /// <param name="length"></param>
     protected void StartTimer(float greenStartToSet,float yellowStartToSet,float length)
     {
         if (isTimerStarted == false)
@@ -55,21 +60,22 @@ public class React : MonoBehaviour
         }
     }
 
-
-    IEnumerator Timer() //Side-effect: Moving Arrow
+    /// <summary>
+    /// A coroutine that act as a timer and set Timer states.
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator Timer()
     {
         isTimerStarted = true;
         SetCurrentState(TimerState.Red, Color.red);
         RedState();
 
-        //print(tempTotalLength);
-
-        //Debug.Log("Call from " + "<color=black> React: </color>" + "<color=yellow> Timer Started </color>");
         while (elapsedTime < tempTotalLength)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.deltaTime;//Time.deltaTime is time difference between two frame.
             reflexUI.SetSliderFiller(elapsedTime);
 
+            //These if else checks for reaching GreenState or YellowState. 
             if (elapsedTime >= tempGreenStart)
                 SetCurrentState(TimerState.Green, Color.green);
             else if (elapsedTime >= tempYellowStart)
@@ -78,15 +84,17 @@ public class React : MonoBehaviour
                 YellowState();
             }
 
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();//Pause coroutine for one frame.
         }
         ResetTimer();
 
-        //if(OnTimerEnd != null)
-        //    OnTimerEnd();
         TimerEnd();
     }
 
+    /// <summary>
+    /// Show specific designed reaction according to current timer state.
+    /// All calling functions in states are based on game design.
+    /// </summary>
     protected virtual void ShowReaction()
     {
         switch (currentState)
@@ -104,7 +112,7 @@ public class React : MonoBehaviour
             case TimerState.Green:
                 ResetTimer();
                 player.SetFreeze(false);
-                player.PlayGreenAnimation();
+                player.PlayGreenShieldAnimation();
                 player.AddCoins(greenCoins);
                 player.SetScore(greenScore);
                 player.IncrementStrike(reflexUI);
@@ -114,7 +122,7 @@ public class React : MonoBehaviour
             case TimerState.Yellow:
                 ResetTimer();
                 player.SetFreeze(false);
-                player.PlayYellowAnimation();
+                player.PlayYellowShieldAnimation();
                 player.ResetStrike();
                 player.SetScore(yellowScore);
                 //print("<color=yellow> Yellow Pressed! </color>");
@@ -122,7 +130,9 @@ public class React : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Resetes all Timer related parameters.
+    /// </summary>
     void ResetTimer()
     {
         StopCoroutine(timerCoroutine);
@@ -144,13 +154,16 @@ public class React : MonoBehaviour
         reflexUI.SetSliderText("");
     }
 
-
+    /// <summary>
+    /// Set Current state of timer and it's specified color
+    /// </summary>
+    /// <param name="statetoSet"></param>
+    /// <param name="stateColor"></param>
     private void SetCurrentState(TimerState statetoSet, Color stateColor)
     {
         currentState = statetoSet;
         reflexUI.SetSliderColor(stateColor);
     }
-
     protected void SetCurrentState(TimerState statetoSet)
     {
         currentState = statetoSet;
@@ -161,6 +174,7 @@ public class React : MonoBehaviour
         return currentState;
     }
 
+//Functions below are written just for overrding in childs classes. Can use Events instead.
     protected virtual void TimerEnd()
     {
 

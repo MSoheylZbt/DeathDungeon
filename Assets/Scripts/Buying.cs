@@ -18,8 +18,7 @@ public class Buying : MonoBehaviour
 
     private void Awake()
     {
-        //print("Buying Awake");
-        if(SceneManager.GetActiveScene().buildIndex == 2)
+        if(SceneManager.GetActiveScene().buildIndex == 2) // If we are in shop scene
         {
             upgradeTXT.text = buyData.GetUpgradePrice(knightData.UpgradeLevel).ToString();
             healthTXT.text = buyData.healthPotionPrice.ToString();
@@ -28,15 +27,17 @@ public class Buying : MonoBehaviour
         }
     }
 
+//All functions below, will be called from clicking on shop buttons.
+
     public void UpgradeArmor()
     {
-        if (knightData.Coins < buyData.GetUpgradePrice(knightData.UpgradeLevel))
+        if (knightData.Coins < buyData.GetUpgradePrice(knightData.UpgradeLevel)) // if player doesn't have enough money
             return;
 
         knightData.Coins -= buyData.GetUpgradePrice(knightData.UpgradeLevel);
         knightData.maxHealth++;
         knightData.UpgradeLevel++;
-        upgradeTXT.text = buyData.GetUpgradePrice(knightData.UpgradeLevel).ToString(); // Update with new price
+        upgradeTXT.text = buyData.GetUpgradePrice(knightData.UpgradeLevel).ToString(); // Update Shop UI text with new price
     }
 
     public void BuyHealthPotion()

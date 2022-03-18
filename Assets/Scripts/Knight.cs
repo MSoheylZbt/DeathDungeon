@@ -6,41 +6,47 @@ using UnityEngine.SceneManagement;
 
 public class Knight : MonoBehaviour
 {
+    //Used for implementing singelton pattern.
     public static Knight instance;
 
     [SerializeField] Knight_Data data;
     [SerializeField] Sounds_data sounds;
     [SerializeField] Coin coinPref;
 
+    //An event that calls whenever players move.
     public delegate void Moving();
     public static event Moving OnMove;
 
     #region Cache
     Vector2 moveAmount = new Vector2();
+    Vector3 playerFirePos;
+
     Tilemap tilemap;
     Animator animator;
     GridHandler gridHandler;
     ArrowReact arrowReact;
     FireReact fireReact;
     ResetGame gameReseter;
-    Coin coin;
     AudioSource audioSource;
-    Vector3 playerFirePos;
+    Coin coin;
     #endregion
 
     bool isFreezed = false;
 
+    //Awake Calls every time a scene loaded before any other events.
     private void Awake()
     {
-        //print("Kepp Knight Awake");
         KeepKnight();
     }
 
+    /// <summary>
+    /// When a scene loaded, a new istance of this class will be created, but with this function we kepp same instance throughout of whole game.
+    /// This called singelton pattern.
+    /// </summary>
     private void KeepKnight()
     {
         if(instance != null)
         {
-            //print("<color=yellow> Knight is detroying </color>");
             Destroy(gameObject);
         }
         else
@@ -52,18 +58,19 @@ public class Knight : MonoBehaviour
 
     private void Start() //Can't call in Awake because Knight_Data has OnEnable and OnEnable calls after Awake
     {
-        //print("Knight Called");
         data.ResetData();
     }
 
-    public void Init(GridHandler handler, ReactManager reactManager,ResetGame reset)
+    public void Init(GridHandler handler, ReactManager reactManager,ResetGame reset)// Init for calling from Main Scene
     {
-        //print("Knight Init");
         data.playerFirstPos = transform.position;
 
         gridHandler = handler;
+        //Animator is an built-in state machine in unity that helps to play animation in correct order.
         animator = GetComponent<Animator>();
         tilemap = gridHandler.GetTileMap();
+
+        //moveAmount is based on tileMap size
         moveAmount.x = tilemap.cellSize.x;
         moveAmount.y = tilemap.cellSize.y;
 
@@ -75,23 +82,21 @@ public class Knight : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    public void Init()
+    public void Init() // Init for calling from Shop Scene
     {
         animator = GetComponent<Animator>();
         moveAmount = data.moveAmount;
     }
 
-    private void Update()
+    private void Update() //Called at start of each frame
     {
-        Move();
+        if (!isFreezed)
+            Move();
     }
 
     private void Move()
     {
-        if (isFreezed)
-            return;
-
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow)) // Check for Up arrow Keys
         {
             MovingCheck(KeyCode.UpArrow);
         }
@@ -103,7 +108,7 @@ public class Knight : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            animator.SetBool("Left", true);
+            animator.SetBool("Left", true); // Play knight turning left animation.
             MovingCheck(KeyCode.LeftArrow);
         }
 
@@ -114,6 +119,10 @@ public class Knight : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Based on player pressed key move player to a new position
+    /// </summary>
+    /// <param name="pressedKey"></param>
     private void MovingCheck(KeyCode pressedKey)
     {
         Vector3 newPos = new Vector3();
@@ -123,7 +132,7 @@ public class Knight : MonoBehaviour
         switch (pressedKey)
         {
             case KeyCode.UpArrow:
-                newPos = new Vector3(transform.position.x, transform.position.y + moveAmount.y, transform.position.z);
+                newPos = new Vector3(transform.position.x, transform.position.y + moveAmount.y, transform.position.z); // move up with y position with amount of moveAmount variable.
                 rayDir = transform.up;
                 cellXY = moveAmount.y;
                 break;
@@ -135,7 +144,7 @@ public class Knight : MonoBehaviour
                 break;
 
             case KeyCode.LeftArrow:
-                newPos = new Vector3(transform.position.x - moveAmount.x, transform.position.y, transform.position.z);
+                newPos = new Vector3(transform.position.x - moveAmount.x, transform.position.y, transform.position.z);// move Left with x position with amount of moveAmount variable.
                 rayDir = -transform.right;
                 cellXY = moveAmount.x;
                 break;
@@ -149,25 +158,27 @@ public class Knight : MonoBehaviour
 
         if (isBlock(newPos,rayDir,cellXY) == false)
         {
-            audioSource.PlayOneShot(sounds.walkSound,sounds.walkAmount);
-            transform.position = newPos;
-            coin?.Disable();
-            OnMove?.Invoke();
-            if (gridHandler)
+            audioSource.PlayOneShot(sounds.walkSound,sounds.walkAmount); //Play Moving sound
+            transform.position = newPos;//Move player
+
+            coin?.Disable();//if coin object is not null then call disable method.
+            OnMove?.Invoke();//if OnMove event is not null then Invoke it.
+
+            if (gridHandler) // if gridhanler is null it means player is in shop scene then there is no need for ContentCheck
             {
-                //print("Grid Handling");
                 TileContentCheck(newPos);
             }
         }
 
     }
 
-    //TODO :: REFACTOR
+    /// <summary>
+    /// Every time this function called, Player current pos is checked for having treasure or traps with use of Content Lists.
+    /// </summary>
+    /// <param name="newPos"></param>
     private void TileContentCheck(Vector3 newPos)
     {
-        //print("Checking Contents");
         int coinsAmount = 0;
-
         if (gridHandler.isSteppedOnTreasure(newPos,out coinsAmount))
         {
             AddCoins(coinsAmount);
@@ -176,15 +187,14 @@ public class Knight : MonoBehaviour
         else if (gridHandler.isSteppedOnFireTrap(newPos))
         {
             audioSource.PlayOneShot(sounds.fireSound, sounds.fireAmount);
-            if (data.InvisPotionCount > 0)
+            if (data.InvisPotionCount > 0) // if player has inivisble potion then traps won't affect them.
             {
-                OnMove += SetFireTile;
+                OnMove += SetFireTile; //Add SetFireTile function as a listener to OnMove event
                 playerFirePos = transform.position;
                 data.InvisPotionCount--;
             }
             else
             {
-                //Debug.Log("Call from " + "<color=black> Knight: </color>" + "<color=orange> Fire Activated </color>");
                 fireReact.StartFireTimer(GetReductionTime());
             }
 
@@ -207,11 +217,11 @@ public class Knight : MonoBehaviour
 
     private void PlayCoinAnimation()
     {
-        if (!coin)
+        if (!coin) //If there is no spawned coin is scene, spawn a coin
         {
             coin = Instantiate(coinPref, transform.position, Quaternion.identity, this.transform);
         }
-        else
+        else //otherwise set it's position and enable it.
         {
             coin.transform.position = transform.position;
             coin.Enable();
@@ -233,20 +243,31 @@ public class Knight : MonoBehaviour
             return data.greenTimeReduction;
         }
         else
-            return 0;
+            return 0; //Shouldn't reduct time.
     }
 
+
+    /// <summary>
+    /// With Raycasting check for Collider that blocks player movement
+    /// </summary>
+    /// <param name="newPos"></param>
+    /// <param name="dir"></param>
+    /// <param name="rayDistance"></param>
+    /// <returns></returns>
     private bool isBlock(Vector3 newPos,Vector3 dir,float rayDistance)
     {
+        //A raycast from player position to a postion in distance of rayDistance and in direction of dir is drawn.
         RaycastHit2D hitted = Physics2D.Raycast(transform.position, dir,rayDistance);
-        //Debug.DrawRay(transform.position, dir, Color.red, 1f);
 
-        return hitted;
+        //Only objects with colliders are Blocks so anytime hitted is true we hit and block and we can't move.
+        return hitted; // if raycast hit anythin it will be return true.
     }
 
+    /// <summary>
+    /// Play Hitting animation and decrease player health
+    /// </summary>
     public void TakeDamage()
     {
-        //print("<color=red> Damage taken! </color>");
         animator.SetTrigger("GetHit");
         audioSource.PlayOneShot(sounds.damageSound,sounds.damageAmount);
         if(data.HealthPotionCount > 0)
@@ -259,13 +280,14 @@ public class Knight : MonoBehaviour
         {
             data.Health--;
             if (data.Health == 0)
-            {
-                //print("<color=red> Dying! </color>");
                 Die();
-            }
         }
     }
 
+    /// <summary>
+    /// Player get coins
+    /// </summary>
+    /// <param name="coinsAmount"></param>
     public void AddCoins(int coinsAmount)
     {
         //Debug.Log(coinsAmount + " <color=yellow> Coins Adeed! </color> ");
@@ -274,12 +296,14 @@ public class Knight : MonoBehaviour
         audioSource.PlayOneShot(sounds.coinSound,sounds.coinAmount);
     }
 
+    /// <summary>
+    /// Game over
+    /// </summary>
     public void Die()
     {
         gameReseter.ShowMenu();
         gameObject.SetActive(false);
     }
-
 
     public Vector3Int GetPlayerTilePos()
     {
@@ -291,7 +315,7 @@ public class Knight : MonoBehaviour
         return tilemap;
     }
 
-    public void SetFreeze(bool value)
+    public void SetFreeze(bool value) //Player won't move
     {
         isFreezed = value;
     }
@@ -306,23 +330,20 @@ public class Knight : MonoBehaviour
         return data.playerFirstPos;
     }
 
-    public void PlayGreenAnimation()
+    public void PlayGreenShieldAnimation()
     {
-        //print("<color=green> Green Animation played! </color>");
         audioSource.PlayOneShot(sounds.shieldSound,sounds.shieldAmount);
         animator.SetTrigger("GreenShield");
     }
 
-    public void PlayYellowAnimation()
+    public void PlayYellowShieldAnimation()
     {
-        //print("<color=yellow> Yellow Animation played! </color>");
         audioSource.PlayOneShot(sounds.shieldSound,sounds.shieldAmount);
         animator.SetTrigger("YellowShield");
     }
 
     public void SetScore(int score)
     {
-        //print("Set Score " + score);
         data.Score = score;
     }
 

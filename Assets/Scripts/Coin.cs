@@ -13,7 +13,7 @@ public class Coin : MonoBehaviour
 
     public void PlayAnimation()
     {
-        animator.SetTrigger("Poor");
+        animator.SetTrigger("Poor"); // Trigger name in Animator is a string called "Poor".
     }
 
     public void Disable() // Call from animation Event

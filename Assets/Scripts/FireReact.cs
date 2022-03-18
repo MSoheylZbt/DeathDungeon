@@ -6,50 +6,47 @@ using UnityEngine.Tilemaps;
 public class FireReact : React
 {
     [Header("From FireReact")]
-    [SerializeField] TileBase fireTile;
+    [SerializeField] TileBase fireTile; // Image of fireTile
     [SerializeField] float yellowStart;
     [SerializeField] float greenStart;
     [SerializeField] float totalLength;
 
     Vector3 playerCurrentTilePos = new Vector3();
 
-    private void OnEnable()
+    private void OnEnable() // Called when this object get active in scene.
     {
-        Knight.OnMove += ShowReaction;
+        Knight.OnMove += ShowReaction; //Show reaction function is a listener of OnMove event and called when OnMove invoked.
     }
-
 
     protected override void ShowReaction()
     {
         if(GetCurrentState() != TimerState.NotStarted)
         {
-            //Debug.Log("Call from " + "<color=black> FireReact: </color>" + "<color=Green> Show Reaction! </color>");
             base.ShowReaction();
-            SetTileFireImage();
+            SetFireTileImage();
         }
     }
 
     public void StartFireTimer(float greenTimeReduction)
     {
         playerCurrentTilePos = player.transform.position;
-        //Debug.Log("Call from " + "<color=black> FireReact: </color>" + "<color=green> Current position: </color> " + playerCurrentTilePos);
         float tempGreenStart = greenStart - greenTimeReduction;
         base.StartTimer(tempGreenStart,yellowStart,totalLength);
     }
 
-    private void KillWithFireTrap()
-    {
-        SetTileFireImage();
-        player.Die();
-    }
 
-    private void SetTileFireImage()
+    /// <summary>
+    /// Set Fire image on player current tile position.
+    /// </summary>
+    private void SetFireTileImage()
     {
-        //Debug.Log("Call from " + "<color=black> FireReact: </color>" + "<color=red> Tile Set! </color>");
         Tilemap tilemap = player.GetTileMap();
         tilemap.SetTile(tilemap.WorldToCell(playerCurrentTilePos), fireTile);
     }
 
+    /// <summary>
+    /// Set Fire image on given position.
+    /// </summary>
     public void SetTileFireImage(Vector3 playerPos)
     {
         Tilemap tilemap = player.GetTileMap();
@@ -59,22 +56,26 @@ public class FireReact : React
     protected override void TimerEnd()
     {
         KillWithFireTrap();
-        //base.TimerEnd();
     }
+
+    private void KillWithFireTrap()
+    {
+        SetFireTileImage();
+        player.Die();
+    }
+
 
     protected override void RedState()
     {
         player.SetFreeze(true);
-        //base.RedState();
     }
 
     protected override void YellowState()
     {
         player.SetFreeze(false);
-        //base.YellowState();
     }
 
-    private void OnDisable()
+    private void OnDisable() // Called when scene changed or object get disabled
     {
         Knight.OnMove -= ShowReaction;
     }
