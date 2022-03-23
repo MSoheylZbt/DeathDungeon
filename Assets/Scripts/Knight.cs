@@ -37,6 +37,7 @@ public class Knight : MonoBehaviour
     private void Awake()
     {
         KeepKnight();
+        data.ResetData();
     }
 
     /// <summary>
@@ -48,6 +49,7 @@ public class Knight : MonoBehaviour
         if(instance != null)
         {
             Destroy(gameObject);
+            print("Destroying");
         }
         else
         {
@@ -56,12 +58,7 @@ public class Knight : MonoBehaviour
         }
     }
 
-    private void Start() //Can't call in Awake because Knight_Data has OnEnable and OnEnable calls after Awake
-    {
-        data.ResetData();
-    }
-
-    public void Init(GridHandler handler, ReactManager reactManager,ResetGame reset)// Init for calling from Main Scene
+    public void Init(GridHandler handler, ReactManager reactManager,ResetGame reset)// Init for calling from Initializer
     {
         data.playerFirstPos = transform.position;
 
@@ -86,6 +83,12 @@ public class Knight : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         moveAmount = data.moveAmount;
+    }
+
+    public void Init(GridHandler temp)
+    {
+        gridHandler = temp;
+        tilemap = gridHandler.GetTileMap();
     }
 
     private void Update() //Called at start of each frame

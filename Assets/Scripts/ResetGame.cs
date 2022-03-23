@@ -20,8 +20,8 @@ public class ResetGame : MonoBehaviour
     {
         data.ResetData();
         levelManager.ResetLevelIndex();
-        levelManager.LoadLevel();
-        rectTransform.anchoredPosition = new Vector2(1718f, 0); // Move menu out of Screen.
+        levelManager.LoadFirstLevel();
+        rectTransform.anchoredPosition = new Vector2(-1718f, 0); // Move menu out of Screen.
     }
 
     public void ShowMenu()

@@ -8,10 +8,12 @@ using UnityEngine.Tilemaps;
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] int shopLevelIndex = 4; // every 4 times that palyer beat main level, reaches a shop.
+    [SerializeField] GridHandler gridPref;
 
     #region Cache
     static int levelIndex = 0; // Is static for remaining during level transition.
 
+    GridHandler gridHandler;
     Tilemap tilemap;
     Animator animator;
 
@@ -48,9 +50,13 @@ public class LevelManager : MonoBehaviour
     public void LoadLevel()//Calling from animation event
     {
         Knight.instance.transform.position = Knight.instance.GetPlayerFirstPos(); //reset player position
+        if (gridHandler)
+        {
+            Destroy(gridHandler.gameObject);
+        }
 
         levelIndex++;
-        //print("level index: " + levelIndex);
+
         if (levelIndex == shopLevelIndex) // if player reaches the shop
         {
             levelIndex = 0;
@@ -58,21 +64,32 @@ public class LevelManager : MonoBehaviour
             SceneManager.LoadScene(2);
         }
         else
-            SceneManager.LoadScene(1);
+        {
+            gridHandler = Instantiate(gridPref, new Vector2(0, 0), Quaternion.identity);
+            gridHandler.Init(this);
+            Knight.instance.Init(gridHandler);
+            //SceneManager.LoadScene(1);
+        }
 
         animator.SetBool("OpenDoor", false);
         Knight.instance.gameObject.SetActive(true);
 
     }
 
-    public void LoadLevelFromShop() // Calls from clicking on button in shop scene
+    public void LoadFirstLevel() // Calls from clicking on button in shop scene
     {
         Knight.instance.transform.position = Knight.instance.GetPlayerFirstPos();
+        Knight.instance.gameObject.SetActive(true);
         SceneManager.LoadScene(1);
     }
 
     public void ResetLevelIndex()
     {
         levelIndex = 0;
+    }
+
+    public void SetGridHandler(GridHandler grid)
+    {
+        gridHandler = grid;
     }
 }
